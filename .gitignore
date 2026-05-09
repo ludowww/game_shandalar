@@ -18,6 +18,10 @@ Thumbs.db
 .vscode/
 .idea/
 
+# Python test cache
+__pycache__/
+*.py[cod]
+
 # Builds
 builds/
 dist/
