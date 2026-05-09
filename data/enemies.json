@@ -1,0 +1,31 @@
+[
+  {
+    "id": "goblin_weak_01",
+    "name": "Gobelin errant",
+    "life": 12,
+    "deck_id": "goblin_weak",
+    "reward_pool": "weak_reward"
+  },
+  {
+    "id": "beast_weak_01",
+    "name": "Bête sauvage",
+    "life": 14,
+    "deck_id": "beast_weak",
+    "reward_pool": "weak_reward"
+  },
+  {
+    "id": "mage_medium_01",
+    "name": "Mage solitaire",
+    "life": 16,
+    "deck_id": "mage_medium",
+    "reward_pool": "medium_reward"
+  },
+  {
+    "id": "boss_seal_guardian",
+    "name": "Gardien du sceau",
+    "life": 20,
+    "deck_id": "boss_seal_guardian",
+    "reward_pool": null,
+    "is_boss": true
+  }
+]

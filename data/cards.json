@@ -1,0 +1,54 @@
+[
+  {
+    "id": "soldier_2_2",
+    "name": "Soldat",
+    "type": "creature",
+    "effect": "damage",
+    "value": 2,
+    "attack": 2,
+    "health": 2,
+    "text": "Inflige 2 dégâts immédiatement."
+  },
+  {
+    "id": "wolf_3_1",
+    "name": "Loup",
+    "type": "creature",
+    "effect": "damage",
+    "value": 3,
+    "attack": 3,
+    "health": 1,
+    "text": "Inflige 3 dégâts immédiatement."
+  },
+  {
+    "id": "firebolt",
+    "name": "Éclair",
+    "type": "spell",
+    "effect": "damage",
+    "value": 3,
+    "text": "Inflige 3 dégâts."
+  },
+  {
+    "id": "healing_light",
+    "name": "Lumière curative",
+    "type": "spell",
+    "effect": "heal",
+    "value": 3,
+    "text": "Gagne 3 points de vie."
+  },
+  {
+    "id": "heavy_strike",
+    "name": "Frappe lourde",
+    "type": "spell",
+    "effect": "damage",
+    "value": 5,
+    "text": "Inflige 5 dégâts."
+  },
+  {
+    "id": "major_heal",
+    "name": "Soin majeur",
+    "type": "spell",
+    "effect": "heal",
+    "value": 5,
+    "text": "Gagne 5 points de vie."
+  }
+]

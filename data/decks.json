@@ -1,0 +1,41 @@
+{
+  "player_start": [
+    "soldier_2_2",
+    "soldier_2_2",
+    "soldier_2_2",
+    "wolf_3_1",
+    "firebolt",
+    "firebolt",
+    "healing_light",
+    "healing_light"
+  ],
+  "goblin_weak": [
+    "wolf_3_1",
+    "wolf_3_1",
+    "soldier_2_2",
+    "firebolt"
+  ],
+  "beast_weak": [
+    "soldier_2_2",
+    "wolf_3_1",
+    "wolf_3_1",
+    "healing_light"
+  ],
+  "mage_medium": [
+    "soldier_2_2",
+    "soldier_2_2",
+    "firebolt",
+    "firebolt",
+    "healing_light",
+    "heavy_strike"
+  ],
+  "boss_seal_guardian": [
+    "soldier_2_2",
+    "wolf_3_1",
+    "wolf_3_1",
+    "firebolt",
+    "firebolt",
+    "heavy_strike",
+    "major_heal"
+  ]
+}
