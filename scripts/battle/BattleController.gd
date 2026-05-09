@@ -1,5 +1,7 @@
 extends Control
 
+signal battle_finished
+
 const Deck = preload("res://scripts/battle/Deck.gd")
 const Combatant = preload("res://scripts/battle/Combatant.gd")
 const SimpleAI = preload("res://scripts/battle/SimpleAI.gd")
@@ -10,19 +12,23 @@ var decks: Dictionary = {}
 var player := Combatant.new()
 var enemy := Combatant.new()
 var ai := SimpleAI.new()
-var battle_finished := false
+var battle_finished_state := false
 
 @onready var player_life_label: Label = %PlayerLifeLabel
 @onready var enemy_life_label: Label = %EnemyLifeLabel
 @onready var enemy_name_label: Label = %EnemyNameLabel
 @onready var hand_container: HBoxContainer = %HandContainer
 @onready var log_label: Label = %LogLabel
+@onready var return_button: Button = %ReturnButton
 
 func _ready() -> void:
+	return_button.pressed.connect(_on_return_button_pressed)
+	return_button.visible = false
 	start_battle(GameState.current_enemy_id)
 
 func start_battle(enemy_id: String) -> void:
-	battle_finished = false
+	battle_finished_state = false
+	GameState.last_battle_won = false
 	card_database = build_card_database(DataLoader.load_cards())
 	decks = DataLoader.load_decks()
 	enemies_by_id = build_enemy_database(DataLoader.load_enemies())
@@ -30,6 +36,7 @@ func start_battle(enemy_id: String) -> void:
 	var enemy_data: Dictionary = enemies_by_id.get(enemy_id, {})
 	if enemy_data.is_empty():
 		log_label.text = "Erreur : ennemi inconnu %s" % enemy_id
+		return_button.visible = true
 		return
 
 	var player_deck_ids: Array = GameState.player_deck
@@ -55,7 +62,7 @@ func build_enemy_database(enemies_data: Array) -> Dictionary:
 	return result
 
 func play_player_card(card_index: int) -> void:
-	if battle_finished:
+	if battle_finished_state:
 		return
 
 	var card = player.play_card(card_index, card_database, enemy)
@@ -86,15 +93,20 @@ func enemy_turn() -> void:
 
 func check_battle_end() -> bool:
 	if enemy.is_dead():
-		battle_finished = true
+		battle_finished_state = true
+		GameState.last_battle_won = true
 		GameState.player_life = player.life
+		GameState.mark_encounter_defeated(GameState.current_enemy_id)
 		log_label.text += "\nVictoire."
+		return_button.visible = true
 		return true
 	if player.is_dead():
-		battle_finished = true
+		battle_finished_state = true
+		GameState.last_battle_won = false
 		GameState.player_life = 0
 		GameState.finish_run(false)
 		log_label.text += "\nDéfaite."
+		return_button.visible = true
 		return true
 	return false
 
@@ -111,5 +123,9 @@ func refresh_ui() -> void:
 		var card: Dictionary = card_database.get(card_id, {})
 		var button := Button.new()
 		button.text = "%s\n%s" % [str(card.get("name", card_id)), str(card.get("text", ""))]
+		button.disabled = battle_finished_state
 		button.pressed.connect(func(): play_player_card(i))
 		hand_container.add_child(button)
+
+func _on_return_button_pressed() -> void:
+	battle_finished.emit()

@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://mainv0shandalar"]
+[gd_scene load_steps=2 format=3 uid="uid://mainv0shandalar"]
 
 [ext_resource type="Script" path="res://scripts/main/Main.gd" id="1_main"]
-[ext_resource type="PackedScene" path="res://scenes/world/WorldMap.tscn" id="2_worldmap"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -11,6 +10,3 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_main")
-
-[node name="WorldMap" parent="." instance=ExtResource("2_worldmap")]
-layout_mode = 1

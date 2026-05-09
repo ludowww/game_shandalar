@@ -7,6 +7,8 @@ var defeated_encounters: Array = []
 var current_enemy_id := ""
 var current_tile_type := ""
 var reward_pending := false
+var pending_reward_pool := ""
+var last_battle_won := false
 var run_finished := false
 var run_won := false
 var cards_added := 0
@@ -19,6 +21,8 @@ func reset_run() -> void:
 	current_enemy_id = ""
 	current_tile_type = ""
 	reward_pending = false
+	pending_reward_pool = ""
+	last_battle_won = false
 	run_finished = false
 	run_won = false
 	cards_added = 0

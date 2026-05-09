@@ -7,6 +7,7 @@ MAP_JSON = ROOT / "data" / "map_mvp.json"
 WORLD_MAP_SCRIPT = ROOT / "scripts" / "world" / "WorldMap.gd"
 WORLD_MAP_SCENE = ROOT / "scenes" / "world" / "WorldMap.tscn"
 MAIN_SCENE = ROOT / "scenes" / "main" / "Main.tscn"
+MAIN_SCRIPT = ROOT / "scripts" / "main" / "Main.gd"
 
 
 class WorldMapStaticTests(unittest.TestCase):
@@ -48,10 +49,12 @@ class WorldMapStaticTests(unittest.TestCase):
     def test_world_map_scene_exists_and_main_instantiates_it(self):
         world_scene = WORLD_MAP_SCENE.read_text(encoding="utf-8")
         main_scene = MAIN_SCENE.read_text(encoding="utf-8")
+        main_script = MAIN_SCRIPT.read_text(encoding="utf-8")
 
         self.assertIn('path="res://scripts/world/WorldMap.gd"', world_scene)
-        self.assertIn('path="res://scenes/world/WorldMap.tscn"', main_scene)
-        self.assertIn('instance=ExtResource', main_scene)
+        self.assertIn('path="res://scripts/main/Main.gd"', main_scene)
+        self.assertIn('preload("res://scenes/world/WorldMap.tscn")', main_script)
+        self.assertIn('show_world_map', main_script)
 
 
 if __name__ == "__main__":
