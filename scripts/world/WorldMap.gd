@@ -24,7 +24,7 @@ func _ready() -> void:
 		return
 
 	build_grid(map_data)
-	var start_position := map_data.get("start_position", [1, 1])
+	var start_position: Array = map_data.get("start_position", [1, 1])
 	player_token.set_grid_position(Vector2i(int(start_position[0]), int(start_position[1])))
 	status_label.text = "Carte MVP 8x8 chargée — déplace-toi avec les flèches ou ZQSD."
 
