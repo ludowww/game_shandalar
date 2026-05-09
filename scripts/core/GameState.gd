@@ -34,6 +34,15 @@ func mark_encounter_defeated(encounter_id: String) -> void:
 func is_encounter_defeated(encounter_id: String) -> bool:
 	return defeated_encounters.has(encounter_id)
 
+func add_card_to_deck(card_id: String) -> void:
+	if card_id == "":
+		return
+	player_deck.append(card_id)
+	cards_added += 1
+	reward_pending = false
+	pending_reward_pool = ""
+	last_battle_won = false
+
 func finish_run(won: bool) -> void:
 	run_finished = true
 	run_won = won

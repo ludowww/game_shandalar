@@ -2,6 +2,7 @@ extends Control
 
 const WORLD_MAP_SCENE := preload("res://scenes/world/WorldMap.tscn")
 const BATTLE_SCENE := preload("res://scenes/battle/BattleScene.tscn")
+const REWARD_SCENE := preload("res://scenes/reward/RewardScene.tscn")
 
 var current_scene: Node = null
 
@@ -17,7 +18,18 @@ func show_world_map() -> void:
 func show_battle() -> void:
 	_replace_scene(BATTLE_SCENE)
 	if current_scene.has_signal("battle_finished"):
-		current_scene.battle_finished.connect(show_world_map)
+		current_scene.battle_finished.connect(show_after_battle)
+
+func show_after_battle() -> void:
+	if GameState.last_battle_won and GameState.pending_reward_pool != "":
+		show_reward()
+	else:
+		show_world_map()
+
+func show_reward() -> void:
+	_replace_scene(REWARD_SCENE)
+	if current_scene.has_signal("reward_finished"):
+		current_scene.reward_finished.connect(show_world_map)
 
 func _replace_scene(scene: PackedScene) -> void:
 	if current_scene != null:

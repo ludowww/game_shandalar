@@ -1,0 +1,17 @@
+{
+  "weak_reward": [
+    "wolf_3_1",
+    "firebolt",
+    "healing_light"
+  ],
+  "medium_reward": [
+    "heavy_strike",
+    "major_heal",
+    "wolf_3_1"
+  ],
+  "map_reward": [
+    "firebolt",
+    "heavy_strike",
+    "major_heal"
+  ]
+}
