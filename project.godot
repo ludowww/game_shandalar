@@ -12,8 +12,12 @@ config_version=5
 
 config/name="game_shandalar"
 run/main_scene="res://scenes/main/Main.tscn"
-config/features=PackedStringArray("4.3", "Compatibility")
+config/features=PackedStringArray("4.6")
 config/icon="res://icon.svg"
+
+[autoload]
+
+GameState="*res://scripts/core/GameState.gd"
 
 [display]
 
