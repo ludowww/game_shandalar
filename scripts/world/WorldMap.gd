@@ -2,6 +2,7 @@ extends Control
 
 signal battle_requested
 
+const DataLoaderScript = preload("res://scripts/core/DataLoader.gd")
 const TILE_SIZE := 64
 const TILE_GAP := 4
 const TILE_COLORS := {
@@ -21,13 +22,15 @@ var enemies_by_id: Dictionary = {}
 @onready var status_label: Label = %StatusLabel
 @onready var player_token: ColorRect = %PlayerToken
 
+var data_loader := DataLoaderScript.new()
+
 func _ready() -> void:
-	var map_data = DataLoader.load_map()
+	var map_data = data_loader.load_map()
 	if map_data == null:
 		status_label.text = "Erreur : impossible de charger data/map_mvp.json"
 		return
 
-	enemies_by_id = build_enemy_database(DataLoader.load_enemies())
+	enemies_by_id = build_enemy_database(data_loader.load_enemies())
 	current_map_data = map_data
 	build_grid(map_data)
 	var start_position: Array = map_data.get("start_position", [1, 1])

@@ -2,6 +2,7 @@ extends Control
 
 signal battle_finished
 
+const DataLoaderScript = preload("res://scripts/core/DataLoader.gd")
 const Deck = preload("res://scripts/battle/Deck.gd")
 const Combatant = preload("res://scripts/battle/Combatant.gd")
 const SimpleAI = preload("res://scripts/battle/SimpleAI.gd")
@@ -13,6 +14,7 @@ var player := Combatant.new()
 var enemy := Combatant.new()
 var ai := SimpleAI.new()
 var battle_finished_state := false
+var data_loader := DataLoaderScript.new()
 
 @onready var player_life_label: Label = %PlayerLifeLabel
 @onready var enemy_life_label: Label = %EnemyLifeLabel
@@ -29,9 +31,9 @@ func _ready() -> void:
 func start_battle(enemy_id: String) -> void:
 	battle_finished_state = false
 	GameState.last_battle_won = false
-	card_database = build_card_database(DataLoader.load_cards())
-	decks = DataLoader.load_decks()
-	enemies_by_id = build_enemy_database(DataLoader.load_enemies())
+	card_database = build_card_database(data_loader.load_cards())
+	decks = data_loader.load_decks()
+	enemies_by_id = build_enemy_database(data_loader.load_enemies())
 
 	var enemy_data: Dictionary = enemies_by_id.get(enemy_id, {})
 	if enemy_data.is_empty():

@@ -36,7 +36,7 @@ class WorldMapStaticTests(unittest.TestCase):
             "const TILE_SIZE := 64",
             "const TILE_COLORS :=",
             "func _ready() -> void:",
-            "DataLoader.load_map()",
+            "data_loader.load_map()",
             "func build_grid(map_data: Dictionary) -> void:",
             "func get_tile_type",
             "func get_tile_color",

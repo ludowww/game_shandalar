@@ -59,9 +59,9 @@ class BattleEngineStaticTests(unittest.TestCase):
             "func enemy_turn() -> void:",
             "func check_battle_end() -> bool:",
             "GameState.current_enemy_id",
-            "DataLoader.load_cards()",
-            "DataLoader.load_decks()",
-            "DataLoader.load_enemies()",
+            "data_loader.load_cards()",
+            "data_loader.load_decks()",
+            "data_loader.load_enemies()",
         ]:
             self.assertIn(snippet, content)
 
