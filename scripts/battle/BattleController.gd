@@ -74,12 +74,16 @@ func play_player_card(card_index: int) -> void:
 		return
 
 	log_label.text = "Tu joues %s." % str(card.get("name", "Carte"))
+	draw_player_card()
 	if check_battle_end():
 		refresh_ui()
 		return
 
 	enemy_turn()
 	refresh_ui()
+
+func draw_player_card() -> void:
+	player.draw_card()
 
 func enemy_turn() -> void:
 	enemy.draw_card()
