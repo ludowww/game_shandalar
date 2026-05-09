@@ -1,6 +1,7 @@
 extends Control
 
 const TILE_SIZE := 64
+const TILE_GAP := 4
 const TILE_COLORS := {
 	"empty": Color(0.12, 0.15, 0.18, 1.0),
 	"start": Color(0.20, 0.50, 0.90, 1.0),
@@ -9,8 +10,12 @@ const TILE_COLORS := {
 	"boss": Color(0.55, 0.18, 0.75, 1.0)
 }
 
+var map_width := 0
+var map_height := 0
+
 @onready var grid: GridContainer = %MapGrid
 @onready var status_label: Label = %StatusLabel
+@onready var player_token: ColorRect = %PlayerToken
 
 func _ready() -> void:
 	var map_data = DataLoader.load_map()
@@ -19,24 +24,50 @@ func _ready() -> void:
 		return
 
 	build_grid(map_data)
-	status_label.text = "Carte MVP 8x8 chargée — boss visible dès le départ."
+	var start_position := map_data.get("start_position", [1, 1])
+	player_token.set_grid_position(Vector2i(int(start_position[0]), int(start_position[1])))
+	status_label.text = "Carte MVP 8x8 chargée — déplace-toi avec les flèches ou ZQSD."
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_echo():
+		return
+
+	if Input.is_action_just_pressed("move_up"):
+		try_move_player(Vector2i.UP)
+	elif Input.is_action_just_pressed("move_down"):
+		try_move_player(Vector2i.DOWN)
+	elif Input.is_action_just_pressed("move_left"):
+		try_move_player(Vector2i.LEFT)
+	elif Input.is_action_just_pressed("move_right"):
+		try_move_player(Vector2i.RIGHT)
 
 func build_grid(map_data: Dictionary) -> void:
-	var width := int(map_data.get("width", 0))
-	var height := int(map_data.get("height", 0))
-	grid.columns = width
+	map_width = int(map_data.get("width", 0))
+	map_height = int(map_data.get("height", 0))
+	grid.columns = map_width
 
 	for child in grid.get_children():
 		child.queue_free()
 
-	for y in range(height):
-		for x in range(width):
+	for y in range(map_height):
+		for x in range(map_width):
 			var tile_type := get_tile_type(map_data, x, y)
 			var tile := ColorRect.new()
 			tile.custom_minimum_size = Vector2(TILE_SIZE, TILE_SIZE)
 			tile.color = get_tile_color(tile_type)
 			tile.tooltip_text = "%s (%d, %d)" % [tile_type, x, y]
 			grid.add_child(tile)
+
+func try_move_player(delta: Vector2i) -> void:
+	var next_position := GameState.player_position + delta
+	if not is_inside_map(next_position):
+		return
+
+	player_token.set_grid_position(next_position)
+	status_label.text = "Position joueur : (%d, %d)" % [next_position.x, next_position.y]
+
+func is_inside_map(grid_position: Vector2i) -> bool:
+	return grid_position.x >= 0 and grid_position.y >= 0 and grid_position.x < map_width and grid_position.y < map_height
 
 func get_tile_type(map_data: Dictionary, x: int, y: int) -> String:
 	for tile in map_data.get("tiles", []):
