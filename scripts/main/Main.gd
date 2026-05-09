@@ -3,6 +3,7 @@ extends Control
 const WORLD_MAP_SCENE := preload("res://scenes/world/WorldMap.tscn")
 const BATTLE_SCENE := preload("res://scenes/battle/BattleScene.tscn")
 const REWARD_SCENE := preload("res://scenes/reward/RewardScene.tscn")
+const RUN_RESULT_SCENE := preload("res://scenes/ui/RunResult.tscn")
 
 var current_scene: Node = null
 
@@ -11,6 +12,9 @@ func _ready() -> void:
 	show_world_map()
 
 func show_world_map() -> void:
+	if GameState.run_finished:
+		show_run_result()
+		return
 	_replace_scene(WORLD_MAP_SCENE)
 	if current_scene.has_signal("battle_requested"):
 		current_scene.battle_requested.connect(show_battle)
@@ -21,7 +25,9 @@ func show_battle() -> void:
 		current_scene.battle_finished.connect(show_after_battle)
 
 func show_after_battle() -> void:
-	if GameState.last_battle_won and GameState.pending_reward_pool != "":
+	if GameState.run_finished:
+		show_run_result()
+	elif GameState.last_battle_won and GameState.pending_reward_pool != "":
 		show_reward()
 	else:
 		show_world_map()
@@ -30,6 +36,15 @@ func show_reward() -> void:
 	_replace_scene(REWARD_SCENE)
 	if current_scene.has_signal("reward_finished"):
 		current_scene.reward_finished.connect(show_world_map)
+
+func show_run_result() -> void:
+	_replace_scene(RUN_RESULT_SCENE)
+	if current_scene.has_signal("restart_requested"):
+		current_scene.restart_requested.connect(restart_run)
+
+func restart_run() -> void:
+	GameState.reset_run()
+	show_world_map()
 
 func _replace_scene(scene: PackedScene) -> void:
 	if current_scene != null:

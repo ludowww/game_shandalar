@@ -103,7 +103,12 @@ func check_battle_end() -> bool:
 		GameState.last_battle_won = true
 		GameState.player_life = player.life
 		GameState.mark_encounter_defeated(GameState.current_enemy_id)
-		log_label.text += "\nVictoire."
+		if is_current_enemy_boss():
+			GameState.pending_reward_pool = ""
+			GameState.finish_run(true)
+			log_label.text += "\nVictoire finale."
+		else:
+			log_label.text += "\nVictoire."
 		return_button.visible = true
 		return true
 	if player.is_dead():
@@ -130,8 +135,12 @@ func refresh_ui() -> void:
 		var button := Button.new()
 		button.text = "%s\n%s" % [str(card.get("name", card_id)), str(card.get("text", ""))]
 		button.disabled = battle_finished_state
-		button.pressed.connect(func(): play_player_card(i))
+		button.pressed.connect(play_player_card.bind(i))
 		hand_container.add_child(button)
+
+func is_current_enemy_boss() -> bool:
+	var enemy_data: Dictionary = enemies_by_id.get(GameState.current_enemy_id, {})
+	return bool(enemy_data.get("is_boss", false))
 
 func _on_return_button_pressed() -> void:
 	battle_finished.emit()
