@@ -12,6 +12,7 @@ const TILE_COLORS := {
 
 var map_width := 0
 var map_height := 0
+var current_map_data: Dictionary = {}
 
 @onready var grid: GridContainer = %MapGrid
 @onready var status_label: Label = %StatusLabel
@@ -23,9 +24,11 @@ func _ready() -> void:
 		status_label.text = "Erreur : impossible de charger data/map_mvp.json"
 		return
 
+	current_map_data = map_data
 	build_grid(map_data)
 	var start_position: Array = map_data.get("start_position", [1, 1])
 	player_token.set_grid_position(Vector2i(int(start_position[0]), int(start_position[1])))
+	handle_tile_entered(GameState.player_position)
 	status_label.text = "Carte MVP 8x8 chargée — déplace-toi avec les flèches ou ZQSD."
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -64,7 +67,37 @@ func try_move_player(delta: Vector2i) -> void:
 		return
 
 	player_token.set_grid_position(next_position)
-	status_label.text = "Position joueur : (%d, %d)" % [next_position.x, next_position.y]
+	handle_tile_entered(next_position)
+
+func handle_tile_entered(grid_position: Vector2i) -> void:
+	var tile := get_tile_at_position(grid_position)
+	var tile_type := str(tile.get("type", "empty"))
+	GameState.current_tile_type = tile_type
+	GameState.reward_pending = false
+
+	match tile_type:
+		"enemy":
+			GameState.current_enemy_id = str(tile.get("enemy_id", ""))
+			if GameState.is_encounter_defeated(GameState.current_enemy_id):
+				status_label.text = "Rencontre déjà vaincue : %s" % GameState.current_enemy_id
+			else:
+				status_label.text = "Rencontre : %s" % GameState.current_enemy_id
+		"boss":
+			GameState.current_enemy_id = str(tile.get("enemy_id", ""))
+			status_label.text = "Boss : %s" % GameState.current_enemy_id
+		"reward":
+			GameState.current_enemy_id = ""
+			GameState.reward_pending = true
+			status_label.text = "Récompense trouvée."
+		_:
+			GameState.current_enemy_id = ""
+			status_label.text = "Position joueur : (%d, %d)" % [grid_position.x, grid_position.y]
+
+func get_tile_at_position(grid_position: Vector2i) -> Dictionary:
+	for tile in current_map_data.get("tiles", []):
+		if int(tile.get("x", -1)) == grid_position.x and int(tile.get("y", -1)) == grid_position.y:
+			return tile
+	return {"type": "empty"}
 
 func is_inside_map(grid_position: Vector2i) -> bool:
 	return grid_position.x >= 0 and grid_position.y >= 0 and grid_position.x < map_width and grid_position.y < map_height
