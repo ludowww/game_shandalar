@@ -2,16 +2,22 @@
   "weak_reward": [
     "wolf_3_1",
     "firebolt",
-    "healing_light"
+    "healing_light",
+    "archer_2_1",
+    "campfire"
   ],
   "medium_reward": [
     "heavy_strike",
     "major_heal",
-    "wolf_3_1"
+    "wolf_3_1",
+    "poison_dart",
+    "knight_4_3"
   ],
   "map_reward": [
     "firebolt",
     "heavy_strike",
-    "major_heal"
+    "major_heal",
+    "poison_dart",
+    "campfire"
   ]
 }

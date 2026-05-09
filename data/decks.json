@@ -2,40 +2,51 @@
   "player_start": [
     "soldier_2_2",
     "soldier_2_2",
-    "soldier_2_2",
+    "archer_2_1",
     "wolf_3_1",
     "firebolt",
     "firebolt",
     "healing_light",
-    "healing_light"
+    "campfire",
+    "poison_dart",
+    "knight_4_3"
   ],
   "goblin_weak": [
     "wolf_3_1",
     "wolf_3_1",
-    "soldier_2_2",
-    "firebolt"
+    "archer_2_1",
+    "firebolt",
+    "poison_dart",
+    "healing_light"
   ],
   "beast_weak": [
     "soldier_2_2",
     "wolf_3_1",
     "wolf_3_1",
-    "healing_light"
+    "knight_4_3",
+    "healing_light",
+    "campfire"
   ],
   "mage_medium": [
-    "soldier_2_2",
+    "archer_2_1",
     "soldier_2_2",
     "firebolt",
     "firebolt",
+    "poison_dart",
     "healing_light",
-    "heavy_strike"
-  ],
-  "boss_seal_guardian": [
-    "soldier_2_2",
-    "wolf_3_1",
-    "wolf_3_1",
-    "firebolt",
-    "firebolt",
     "heavy_strike",
     "major_heal"
+  ],
+  "boss_seal_guardian": [
+    "knight_4_3",
+    "wolf_3_1",
+    "wolf_3_1",
+    "firebolt",
+    "firebolt",
+    "poison_dart",
+    "heavy_strike",
+    "major_heal",
+    "campfire",
+    "heavy_strike"
   ]
 }

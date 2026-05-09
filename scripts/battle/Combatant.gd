@@ -30,6 +30,7 @@ func play_card(card_index: int, card_database: Dictionary, target):
 		return null
 
 	apply_card_effect(card, target)
+	deck.discard(card_id)
 	return card
 
 func apply_card_effect(card: Dictionary, target) -> void:
