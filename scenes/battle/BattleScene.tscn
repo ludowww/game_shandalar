@@ -1,0 +1,80 @@
+[gd_scene load_steps=2 format=3 uid="uid://battlescenev0"]
+
+[ext_resource type="Script" path="res://scripts/battle/BattleController.gd" id="1_battle"]
+
+[node name="BattleScene" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_battle")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.08, 0.06, 0.07, 1)
+
+[node name="RootMargin" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 32
+
+[node name="VBox" type="VBoxContainer" parent="RootMargin"]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="Title" type="Label" parent="RootMargin/VBox"]
+layout_mode = 2
+text = "Combat abstrait V0"
+horizontal_alignment = 1
+
+[node name="EnemyNameLabel" type="Label" parent="RootMargin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Ennemi"
+horizontal_alignment = 1
+
+[node name="LifeRow" type="HBoxContainer" parent="RootMargin/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 24
+alignment = 1
+
+[node name="PlayerLifeLabel" type="Label" parent="RootMargin/VBox/LifeRow"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Joueur : 20 PV"
+
+[node name="EnemyLifeLabel" type="Label" parent="RootMargin/VBox/LifeRow"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Ennemi : 20 PV"
+
+[node name="LogLabel" type="Label" parent="RootMargin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Journal combat"
+autowrap_mode = 3
+
+[node name="HandTitle" type="Label" parent="RootMargin/VBox"]
+layout_mode = 2
+text = "Main du joueur — clique une carte"
+horizontal_alignment = 1
+
+[node name="HandContainer" type="HBoxContainer" parent="RootMargin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
