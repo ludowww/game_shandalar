@@ -103,7 +103,7 @@ func enemy_turn() -> void:
 	check_battle_end()
 
 func resolve_creature_attack(attacker, defender, attacker_label: String) -> void:
-	var damage := attacker.attack_with_creatures(defender)
+	var damage: int = attacker.attack_with_creatures(defender)
 	if damage > 0:
 		log_label.text += "\n%s %s pour %d." % [attacker_label, ATTACK_LOG_TEXT, damage]
 

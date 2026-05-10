@@ -58,7 +58,7 @@ class PersistentCreaturesStaticTests(unittest.TestCase):
         content = BATTLE.read_text(encoding="utf-8")
         for snippet in [
             "func resolve_creature_attack(attacker, defender, attacker_label: String) -> void:",
-            "var damage := attacker.attack_with_creatures(defender)",
+            "var damage: int = attacker.attack_with_creatures(defender)",
             '"créatures attaquent"',
             "resolve_creature_attack(player, enemy, \"Tes\")",
             "resolve_creature_attack(enemy, player, enemy.name)",
