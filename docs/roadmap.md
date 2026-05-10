@@ -30,4 +30,5 @@ carte → déplacement → rencontre → combat abstrait → récompense → dec
 12. T012 — Carte aventure Shandalar-like
 13. T013 — Lieux spéciaux interactifs
 14. T014 — Marchand simple
-15. T015 — Premier équilibrage V1
+15. T015 — Feedback UI carte aventure
+16. T016 — Premier équilibrage V1

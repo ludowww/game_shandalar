@@ -48,6 +48,19 @@ layout_mode = 2
 text = "Chargement de la carte..."
 horizontal_alignment = 1
 
+[node name="HudLabel" type="Label" parent="RootMargin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "PV 20/20   Or 3   Vaincus 0   Cartes +0"
+horizontal_alignment = 1
+
+[node name="TileDetailLabel" type="Label" parent="RootMargin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Survole / déplace-toi pour lire le lieu."
+horizontal_alignment = 1
+autowrap_mode = 3
+
 [node name="Content" type="HBoxContainer" parent="RootMargin/VBox"]
 layout_mode = 2
 size_flags_vertical = 3

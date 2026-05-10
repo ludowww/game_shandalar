@@ -7,6 +7,8 @@ signal shop_requested
 const DataLoaderScript = preload("res://scripts/core/DataLoader.gd")
 const TILE_SIZE := 44
 const TILE_GAP := 4
+const USED_TILE_COLOR := Color(0.22, 0.24, 0.26, 1.0)
+const DEFEATED_TILE_COLOR := Color(0.18, 0.22, 0.20, 1.0)
 const TILE_COLORS := {
 	"empty": Color(0.10, 0.13, 0.16, 1.0),
 	"start": Color(0.20, 0.50, 0.90, 1.0),
@@ -35,6 +37,8 @@ var enemies_by_id: Dictionary = {}
 
 @onready var grid: GridContainer = %MapGrid
 @onready var status_label: Label = %StatusLabel
+@onready var hud_label: Label = %HudLabel
+@onready var tile_detail_label: Label = %TileDetailLabel
 @onready var player_token: ColorRect = %PlayerToken
 @onready var legend_box: VBoxContainer = %LegendBox
 
@@ -55,6 +59,9 @@ func _ready() -> void:
 		GameState.player_position = Vector2i(int(start_position[0]), int(start_position[1]))
 	player_token.set_grid_position(GameState.player_position)
 	refresh_after_battle_if_needed()
+	refresh_hud()
+	var current_tile := get_tile_at_position(GameState.player_position)
+	tile_detail_label.text = describe_tile(current_tile, GameState.player_position)
 	if status_label.text == "Chargement de la carte...":
 		status_label.text = "Carte aventure chargée — explore librement, choisis ta route, puis défie le boss."
 
@@ -86,13 +93,21 @@ func build_grid(map_data: Dictionary) -> void:
 			var tile := build_tile_control(tile_type, tile_data, x, y)
 			grid.add_child(tile)
 
+func refresh_hud() -> void:
+	hud_label.text = "PV %d/%d   Or %d   Vaincus %d   Cartes +%d" % [GameState.player_life, GameState.MAX_PLAYER_LIFE, GameState.player_gold, GameState.defeated_encounters.size(), GameState.cards_added]
+
 func build_tile_control(tile_type: String, tile_data: Dictionary, x: int, y: int) -> PanelContainer:
 	var tile := PanelContainer.new()
 	tile.custom_minimum_size = Vector2(TILE_SIZE, TILE_SIZE)
 	tile.tooltip_text = "%s — %s (%d, %d)" % [tile_data.get("label", tile_type), tile_data.get("description", ""), x, y]
 
 	var style := StyleBoxFlat.new()
-	style.bg_color = get_tile_color(tile_type)
+	var grid_position := Vector2i(x, y)
+	if is_tile_consumed(tile_data, grid_position):
+		style.bg_color = get_consumed_tile_color(tile_data)
+		tile.modulate = Color(0.70, 0.70, 0.70, 1.0)
+	else:
+		style.bg_color = get_tile_color(tile_type)
 	style.corner_radius_top_left = 6
 	style.corner_radius_top_right = 6
 	style.corner_radius_bottom_left = 6
@@ -106,6 +121,8 @@ func build_tile_control(tile_type: String, tile_data: Dictionary, x: int, y: int
 
 	var symbol := Label.new()
 	symbol.text = TILE_SYMBOLS.get(tile_type, "·")
+	if is_tile_consumed(tile_data, grid_position):
+		symbol.text = "✓"
 	symbol.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	symbol.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	symbol.add_theme_font_size_override("font_size", 20)
@@ -135,6 +152,7 @@ func try_move_player(delta: Vector2i) -> void:
 
 	player_token.set_grid_position(next_position)
 	handle_tile_entered(next_position)
+	refresh_hud()
 
 func handle_tile_entered(grid_position: Vector2i) -> void:
 	var tile := get_tile_at_position(grid_position)
@@ -142,6 +160,7 @@ func handle_tile_entered(grid_position: Vector2i) -> void:
 	var interaction_type := get_interaction_type(tile_type)
 	GameState.current_tile_type = interaction_type
 	GameState.reward_pending = false
+	tile_detail_label.text = describe_tile(tile, grid_position)
 
 	match interaction_type:
 		"enemy":
@@ -208,8 +227,44 @@ func refresh_after_battle_if_needed() -> void:
 		GameState.mark_encounter_defeated(GameState.current_enemy_id)
 		status_label.text = "Victoire : %s vaincu." % GameState.current_enemy_id
 		GameState.last_battle_won = false
+		build_grid(current_map_data)
 	elif GameState.run_finished and not GameState.run_won:
 		status_label.text = "Défaite — run terminée."
+
+func is_tile_consumed(tile: Dictionary, grid_position: Vector2i) -> bool:
+	if tile.get("enemy_id", "") != "" and GameState.is_encounter_defeated(str(tile.get("enemy_id", ""))):
+		return true
+	return GameState.is_special_tile_used(grid_position)
+
+func get_consumed_tile_color(tile: Dictionary) -> Color:
+	if tile.get("enemy_id", "") != "":
+		return DEFEATED_TILE_COLOR
+	return USED_TILE_COLOR
+
+func describe_tile(tile: Dictionary, grid_position: Vector2i) -> String:
+	var tile_type := str(tile.get("type", "empty"))
+	var label := str(tile.get("label", "Plaine"))
+	if is_tile_consumed(tile, grid_position):
+		if tile.get("enemy_id", "") != "":
+			return "%s — Déjà vaincu" % label
+		return "%s — Déjà utilisé" % label
+	match tile_type:
+		"enemy_weak":
+			return "%s — Danger : faible — récompense possible." % label
+		"enemy_medium":
+			return "%s — Danger : moyen — récompense meilleure." % label
+		"boss":
+			return "%s — Boss final — très risqué." % label
+		"village":
+			return "%s — Marchand : %d or — or disponible : %d." % [label, int(tile.get("shop_cost", 1)), GameState.player_gold]
+		"sanctuary":
+			return "%s — Sanctuaire : soin complet." % label
+		"treasure":
+			return "%s — Trésor : récompense de carte." % label
+		"start":
+			return "%s — Départ de l'aventure." % label
+		_:
+			return "%s — Route libre." % label
 
 func build_enemy_database(enemies_data: Array) -> Dictionary:
 	var result := {}
