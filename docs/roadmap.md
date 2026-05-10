@@ -38,4 +38,5 @@ carte → déplacement → rencontre → combat abstrait → récompense → dec
 20. T019 — Tour Magic simplifié
 21. T020 — Attaque et blocage simplifiés
 22. T021 — Cartes Magic simples réelles
-23. T022 — Premier équilibrage V1
+23. T022 — Playtest & équilibrage V1
+24. T023 — À définir
