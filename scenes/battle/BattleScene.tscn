@@ -68,6 +68,13 @@ layout_mode = 2
 text = "Journal combat"
 autowrap_mode = 3
 
+[node name="MagicZonesLabel" type="Label" parent="RootMargin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Zones Magic — Bibliothèque | Main | Champ de bataille | Cimetière"
+horizontal_alignment = 1
+autowrap_mode = 3
+
 [node name="EnemyBattlefieldTitle" type="Label" parent="RootMargin/VBox"]
 layout_mode = 2
 text = "Champ de bataille ennemi"

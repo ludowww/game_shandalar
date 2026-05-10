@@ -22,6 +22,7 @@ var data_loader := DataLoaderScript.new()
 @onready var enemy_name_label: Label = %EnemyNameLabel
 @onready var player_battlefield_container: HBoxContainer = %PlayerBattlefieldContainer
 @onready var enemy_battlefield_container: HBoxContainer = %EnemyBattlefieldContainer
+@onready var magic_zones_label: Label = %MagicZonesLabel
 @onready var hand_container: HBoxContainer = %HandContainer
 @onready var log_label: Label = %LogLabel
 @onready var return_button: Button = %ReturnButton
@@ -137,6 +138,7 @@ func refresh_ui() -> void:
 	enemy_life_label.text = "%s : %d PV" % [enemy.name, enemy.life]
 	enemy_name_label.text = enemy.name
 	refresh_battlefield_ui()
+	refresh_zone_summary_ui()
 
 	for child in hand_container.get_children():
 		child.queue_free()
@@ -153,6 +155,20 @@ func refresh_ui() -> void:
 func refresh_battlefield_ui() -> void:
 	populate_battlefield(player_battlefield_container, player.battlefield)
 	populate_battlefield(enemy_battlefield_container, enemy.battlefield)
+
+func refresh_zone_summary_ui() -> void:
+	var player_zones: Dictionary = player.get_zone_summary()
+	var enemy_zones: Dictionary = enemy.get_zone_summary()
+	magic_zones_label.text = "Zones Magic — Joueur: Bibliothèque %d | Main %d | Champ de bataille %d | Cimetière %d\nEnnemi: Bibliothèque %d | Main %d | Champ de bataille %d | Cimetière %d" % [
+		int(player_zones.get("library", 0)),
+		int(player_zones.get("hand", 0)),
+		int(player_zones.get("battlefield", 0)),
+		int(player_zones.get("graveyard", 0)),
+		int(enemy_zones.get("library", 0)),
+		int(enemy_zones.get("hand", 0)),
+		int(enemy_zones.get("battlefield", 0)),
+		int(enemy_zones.get("graveyard", 0))
+	]
 
 func populate_battlefield(container: HBoxContainer, creatures: Array) -> void:
 	for child in container.get_children():

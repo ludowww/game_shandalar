@@ -1,5 +1,11 @@
 extends RefCounted
 
+const ZONE_LIBRARY := "Bibliothèque"
+const ZONE_GRAVEYARD := "Cimetière"
+
+# T017: this pile is still named Deck for compatibility with existing data,
+# but in duel rules it represents the Magic library. The discard buffer is
+# the recycle source used by the prototype before a full cemetery model exists.
 var cards: Array = []
 var discard_pile: Array = []
 
@@ -34,3 +40,9 @@ func draw_many(count: int) -> Array:
 			break
 		drawn.append(card)
 	return drawn
+
+func library_size() -> int:
+	return cards.size()
+
+func graveyard_buffer_size() -> int:
+	return discard_pile.size()

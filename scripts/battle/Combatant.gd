@@ -2,10 +2,18 @@ extends RefCounted
 
 const Deck = preload("res://scripts/battle/Deck.gd")
 
+const ZONE_LIBRARY := "Bibliothèque"
+const ZONE_HAND := "Main"
+const ZONE_BATTLEFIELD := "Champ de bataille"
+const ZONE_GRAVEYARD := "Cimetière"
+const FUTURE_ZONE_LANDS := "Terrains (futur)"
+const FUTURE_RESOURCE_MANA := "Mana (futur)"
+
 var name := ""
 var life := 20
 var max_life := 20
 var deck := Deck.new()
+var library = deck
 var hand: Array = []
 var battlefield: Array = []
 var graveyard: Array = []
@@ -14,13 +22,14 @@ func setup(combatant_name: String, starting_life: int, card_ids: Array) -> void:
 	name = combatant_name
 	life = starting_life
 	max_life = starting_life
-	deck.setup(card_ids)
-	hand = deck.draw_many(3)
+	library = deck
+	library.setup(card_ids)
+	hand = library.draw_many(3)
 	battlefield = []
 	graveyard = []
 
 func draw_card() -> void:
-	var card = deck.draw()
+	var card = library.draw()
 	if card != null:
 		hand.append(card)
 
@@ -72,6 +81,19 @@ func move_to_graveyard(card_id: String) -> void:
 	if card_id != "":
 		graveyard.append(card_id)
 		deck.discard(card_id)
+
+func get_zone_summary() -> Dictionary:
+	return {
+		"library": library_size(),
+		"hand": hand.size(),
+		"battlefield": battlefield.size(),
+		"graveyard": graveyard.size(),
+		"future_lands": FUTURE_ZONE_LANDS,
+		"future_mana": FUTURE_RESOURCE_MANA
+	}
+
+func library_size() -> int:
+	return library.library_size()
 
 func apply_card_effect(card: Dictionary, target) -> void:
 	match str(card.get("effect", "")):
