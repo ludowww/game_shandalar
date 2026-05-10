@@ -36,10 +36,19 @@ func show_rewards() -> void:
 		var card_id := str(pool[i])
 		var card: Dictionary = card_database.get(card_id, {})
 		var button := Button.new()
-		button.custom_minimum_size = Vector2(180, 96)
-		button.text = "%s\n%s" % [str(card.get("name", card_id)), str(card.get("text", ""))]
+		var card_text := "%s\n%s" % [str(card.get("name", card_id)), str(card.get("text", ""))]
+		configure_card_button(button, card_text, card_text, Vector2(180, 120))
 		button.pressed.connect(choose_reward.bind(card_id))
 		reward_choices.add_child(button)
+
+func configure_card_button(button: Button, text: String, tooltip: String, minimum_size: Vector2) -> void:
+	button.custom_minimum_size = minimum_size
+	button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	button.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	button.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	button.tooltip_text = tooltip
+	button.text = text
 
 func build_card_database(cards_data: Array) -> Dictionary:
 	var result := {}

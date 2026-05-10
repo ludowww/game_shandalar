@@ -33,13 +33,22 @@ func show_shop() -> void:
 		var card_id := str(pool[i])
 		var card: Dictionary = card_database.get(card_id, {})
 		var button := Button.new()
-		button.custom_minimum_size = Vector2(180, 108)
-		button.text = "%s\n%s\nAcheter (%d or)" % [str(card.get("name", card_id)), str(card.get("text", "")), GameState.pending_shop_cost]
+		var card_text := "%s\n%s\nAcheter (%d or)" % [str(card.get("name", card_id)), str(card.get("text", "")), GameState.pending_shop_cost]
+		configure_card_button(button, card_text, card_text, Vector2(180, 132))
 		button.disabled = not GameState.can_afford(GameState.pending_shop_cost)
 		button.pressed.connect(buy_card.bind(card_id))
 		merchant_choices.add_child(button)
 
 	add_back_button("Retour carte")
+
+func configure_card_button(button: Button, text: String, tooltip: String, minimum_size: Vector2) -> void:
+	button.custom_minimum_size = minimum_size
+	button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	button.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	button.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	button.tooltip_text = tooltip
+	button.text = text
 
 func add_back_button(label: String) -> void:
 	var back_button := Button.new()

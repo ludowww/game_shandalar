@@ -154,10 +154,20 @@ func refresh_ui() -> void:
 		var card: Dictionary = card_database.get(card_id, {})
 		var button := Button.new()
 		var cost := int(card.get("cost", 0))
-		button.text = "%s\nCoût: %d\n%s" % [str(card.get("name", card_id)), cost, str(card.get("text", ""))]
+		var card_text := "%s\nCoût: %d\n%s" % [str(card.get("name", card_id)), cost, str(card.get("text", ""))]
+		configure_card_button(button, card_text, card_text, Vector2(180, 132))
 		button.disabled = battle_finished_state or not player.can_play_card(card)
 		button.pressed.connect(play_player_card.bind(i))
 		hand_container.add_child(button)
+
+func configure_card_button(button: Button, text: String, tooltip: String, minimum_size: Vector2) -> void:
+	button.custom_minimum_size = minimum_size
+	button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	button.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	button.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	button.tooltip_text = tooltip
+	button.text = text
 
 func refresh_battlefield_ui() -> void:
 	populate_battlefield(player_battlefield_container, player.battlefield)
