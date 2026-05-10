@@ -27,157 +27,165 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 32
-theme_override_constants/margin_top = 32
-theme_override_constants/margin_right = 32
-theme_override_constants/margin_bottom = 32
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 16
 
-[node name="VBox" type="VBoxContainer" parent="RootMargin"]
+[node name="RootSplit" type="HBoxContainer" parent="RootMargin"]
 layout_mode = 2
-theme_override_constants/separation = 18
+theme_override_constants/separation = 16
 
-[node name="Title" type="Label" parent="RootMargin/VBox"]
+[node name="MainVBox" type="VBoxContainer" parent="RootMargin/RootSplit"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+
+[node name="Title" type="Label" parent="RootMargin/RootSplit/MainVBox"]
 layout_mode = 2
 text = "game_shandalar — Duel Magic simplifié"
 horizontal_alignment = 1
 
-[node name="EnemyNameLabel" type="Label" parent="RootMargin/VBox"]
+[node name="EnemyNameLabel" type="Label" parent="RootMargin/RootSplit/MainVBox"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Ennemi"
 horizontal_alignment = 1
 
-[node name="LifeRow" type="HBoxContainer" parent="RootMargin/VBox"]
+[node name="LifeRow" type="HBoxContainer" parent="RootMargin/RootSplit/MainVBox"]
 layout_mode = 2
 theme_override_constants/separation = 24
 alignment = 1
 
-[node name="PlayerLifeLabel" type="Label" parent="RootMargin/VBox/LifeRow"]
+[node name="PlayerLifeLabel" type="Label" parent="RootMargin/RootSplit/MainVBox/LifeRow"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Joueur : 20 PV"
 
-[node name="EnemyLifeLabel" type="Label" parent="RootMargin/VBox/LifeRow"]
+[node name="EnemyLifeLabel" type="Label" parent="RootMargin/RootSplit/MainVBox/LifeRow"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Ennemi : 20 PV"
 
-[node name="LogPanel" type="PanelContainer" parent="RootMargin/VBox"]
-layout_mode = 2
-custom_minimum_size = Vector2(0, 150)
-
-[node name="LogVBox" type="VBoxContainer" parent="RootMargin/VBox/LogPanel"]
-layout_mode = 2
-
-[node name="LogTitle" type="Label" parent="RootMargin/VBox/LogPanel/LogVBox"]
-layout_mode = 2
-text = "Journal du combat"
-horizontal_alignment = 1
-
-[node name="LogScroll" type="ScrollContainer" parent="RootMargin/VBox/LogPanel/LogVBox"]
-unique_name_in_owner = true
-layout_mode = 2
-custom_minimum_size = Vector2(0, 120)
-horizontal_scroll_mode = 0
-vertical_scroll_mode = 1
-
-[node name="LogLabel" type="Label" parent="RootMargin/VBox/LogPanel/LogVBox/LogScroll"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-text = "Journal combat"
-autowrap_mode = 3
-
-[node name="MagicZonesLabel" type="Label" parent="RootMargin/VBox"]
+[node name="MagicZonesLabel" type="Label" parent="RootMargin/RootSplit/MainVBox"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Zones Magic — Bibliothèque | Main | Champ de bataille | Cimetière"
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="ManaLabel" type="Label" parent="RootMargin/VBox"]
+[node name="ManaLabel" type="Label" parent="RootMargin/RootSplit/MainVBox"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Mana — Mana joueur: 0 | Terrains joueur: 0 | Mana ennemi: 0 | Terrains ennemi: 0"
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="PhaseLabel" type="Label" parent="RootMargin/VBox"]
+[node name="PhaseLabel" type="Label" parent="RootMargin/RootSplit/MainVBox"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Phase : Début de tour"
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="EnemyBattlefieldTitle" type="Label" parent="RootMargin/VBox"]
+[node name="EnemyBattlefieldTitle" type="Label" parent="RootMargin/RootSplit/MainVBox"]
 layout_mode = 2
 text = "Champ de bataille ennemi"
 horizontal_alignment = 1
 
-[node name="EnemyBattlefieldScroll" type="ScrollContainer" parent="RootMargin/VBox"]
+[node name="EnemyBattlefieldScroll" type="ScrollContainer" parent="RootMargin/RootSplit/MainVBox"]
 layout_mode = 2
-custom_minimum_size = Vector2(0, 76)
+custom_minimum_size = Vector2(0, 72)
 size_flags_horizontal = 3
 horizontal_scroll_mode = 1
 vertical_scroll_mode = 0
 
-[node name="EnemyBattlefieldContainer" type="HBoxContainer" parent="RootMargin/VBox/EnemyBattlefieldScroll"]
+[node name="EnemyBattlefieldContainer" type="HBoxContainer" parent="RootMargin/RootSplit/MainVBox/EnemyBattlefieldScroll"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 12
 alignment = 1
 
-[node name="PlayerBattlefieldTitle" type="Label" parent="RootMargin/VBox"]
+[node name="PlayerBattlefieldTitle" type="Label" parent="RootMargin/RootSplit/MainVBox"]
 layout_mode = 2
 text = "Champ de bataille joueur"
 horizontal_alignment = 1
 
-[node name="PlayerBattlefieldScroll" type="ScrollContainer" parent="RootMargin/VBox"]
+[node name="PlayerBattlefieldScroll" type="ScrollContainer" parent="RootMargin/RootSplit/MainVBox"]
 layout_mode = 2
-custom_minimum_size = Vector2(0, 76)
+custom_minimum_size = Vector2(0, 72)
 size_flags_horizontal = 3
 horizontal_scroll_mode = 1
 vertical_scroll_mode = 0
 
-[node name="PlayerBattlefieldContainer" type="HBoxContainer" parent="RootMargin/VBox/PlayerBattlefieldScroll"]
+[node name="PlayerBattlefieldContainer" type="HBoxContainer" parent="RootMargin/RootSplit/MainVBox/PlayerBattlefieldScroll"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 12
 alignment = 1
 
-[node name="ActionRow" type="HBoxContainer" parent="RootMargin/VBox"]
+[node name="ActionRow" type="HBoxContainer" parent="RootMargin/RootSplit/MainVBox"]
 layout_mode = 2
 theme_override_constants/separation = 12
 alignment = 1
 
-[node name="PassTurnButton" type="Button" parent="RootMargin/VBox/ActionRow"]
+[node name="PassTurnButton" type="Button" parent="RootMargin/RootSplit/MainVBox/ActionRow"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Terminer le tour"
 
-[node name="ReturnButton" type="Button" parent="RootMargin/VBox/ActionRow"]
+[node name="ReturnButton" type="Button" parent="RootMargin/RootSplit/MainVBox/ActionRow"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Retour carte"
 
-[node name="HandTitle" type="Label" parent="RootMargin/VBox"]
+[node name="HandTitle" type="Label" parent="RootMargin/RootSplit/MainVBox"]
 layout_mode = 2
 text = "Main du joueur — clique une carte"
 horizontal_alignment = 1
 
-[node name="HandScroll" type="ScrollContainer" parent="RootMargin/VBox"]
+[node name="HandScroll" type="ScrollContainer" parent="RootMargin/RootSplit/MainVBox"]
 layout_mode = 2
-custom_minimum_size = Vector2(0, 150)
+custom_minimum_size = Vector2(0, 132)
 size_flags_horizontal = 3
 horizontal_scroll_mode = 1
 vertical_scroll_mode = 0
 
-[node name="HandContainer" type="HBoxContainer" parent="RootMargin/VBox/HandScroll"]
+[node name="HandContainer" type="HBoxContainer" parent="RootMargin/RootSplit/MainVBox/HandScroll"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 12
 alignment = 1
+
+[node name="LogPanel" type="PanelContainer" parent="RootMargin/RootSplit"]
+layout_mode = 2
+custom_minimum_size = Vector2(280, 0)
+size_flags_vertical = 3
+
+[node name="LogVBox" type="VBoxContainer" parent="RootMargin/RootSplit/LogPanel"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="LogTitle" type="Label" parent="RootMargin/RootSplit/LogPanel/LogVBox"]
+layout_mode = 2
+text = "Journal du combat"
+horizontal_alignment = 1
+
+[node name="LogScroll" type="ScrollContainer" parent="RootMargin/RootSplit/LogPanel/LogVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 1
+
+[node name="LogLabel" type="Label" parent="RootMargin/RootSplit/LogPanel/LogVBox/LogScroll"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Journal combat"
+autowrap_mode = 3

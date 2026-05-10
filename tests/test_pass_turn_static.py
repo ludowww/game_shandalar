@@ -9,7 +9,7 @@ SCENE = ROOT / "scenes" / "battle" / "BattleScene.tscn"
 class PassTurnStaticTests(unittest.TestCase):
     def test_battle_scene_exposes_pass_turn_button(self):
         scene = SCENE.read_text(encoding="utf-8")
-        self.assertIn('[node name="PassTurnButton" type="Button" parent="RootMargin/VBox/ActionRow"]', scene)
+        self.assertIn('[node name="PassTurnButton" type="Button" parent="RootMargin/RootSplit/MainVBox/ActionRow"]', scene)
         self.assertIn("unique_name_in_owner = true", scene)
         self.assertIn('text = "Terminer le tour"', scene)
 

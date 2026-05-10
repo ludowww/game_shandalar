@@ -19,17 +19,17 @@ class BattleUiStabilityStaticTests(unittest.TestCase):
     def test_combat_zones_have_fixed_scrollable_vertical_space(self):
         scene = SCENE.read_text(encoding="utf-8")
         for snippet in [
-            '[node name="EnemyBattlefieldScroll" type="ScrollContainer" parent="RootMargin/VBox"]',
-            '[node name="EnemyBattlefieldContainer" type="HBoxContainer" parent="RootMargin/VBox/EnemyBattlefieldScroll"]',
-            '[node name="PlayerBattlefieldScroll" type="ScrollContainer" parent="RootMargin/VBox"]',
-            '[node name="PlayerBattlefieldContainer" type="HBoxContainer" parent="RootMargin/VBox/PlayerBattlefieldScroll"]',
-            'custom_minimum_size = Vector2(0, 76)',
+            '[node name="EnemyBattlefieldScroll" type="ScrollContainer" parent="RootMargin/RootSplit/MainVBox"]',
+            '[node name="EnemyBattlefieldContainer" type="HBoxContainer" parent="RootMargin/RootSplit/MainVBox/EnemyBattlefieldScroll"]',
+            '[node name="PlayerBattlefieldScroll" type="ScrollContainer" parent="RootMargin/RootSplit/MainVBox"]',
+            '[node name="PlayerBattlefieldContainer" type="HBoxContainer" parent="RootMargin/RootSplit/MainVBox/PlayerBattlefieldScroll"]',
+            'custom_minimum_size = Vector2(0, 72)',
             'horizontal_scroll_mode = 1',
             'vertical_scroll_mode = 0',
-            '[node name="LogPanel" type="PanelContainer" parent="RootMargin/VBox"]',
-            'custom_minimum_size = Vector2(0, 150)',
-            '[node name="HandScroll" type="ScrollContainer" parent="RootMargin/VBox"]',
-            'custom_minimum_size = Vector2(0, 150)',
+            '[node name="LogPanel" type="PanelContainer" parent="RootMargin/RootSplit"]',
+            'custom_minimum_size = Vector2(280, 0)',
+            '[node name="HandScroll" type="ScrollContainer" parent="RootMargin/RootSplit/MainVBox"]',
+            'custom_minimum_size = Vector2(0, 132)',
         ]:
             self.assertIn(snippet, scene)
 

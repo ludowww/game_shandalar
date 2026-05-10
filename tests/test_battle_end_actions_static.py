@@ -9,9 +9,9 @@ SCENE = ROOT / "scenes" / "battle" / "BattleScene.tscn"
 class BattleEndActionsStaticTests(unittest.TestCase):
     def test_return_and_pass_buttons_are_grouped_above_hand_for_visibility(self):
         scene = SCENE.read_text(encoding="utf-8")
-        self.assertIn('[node name="ActionRow" type="HBoxContainer" parent="RootMargin/VBox"]', scene)
-        self.assertIn('[node name="PassTurnButton" type="Button" parent="RootMargin/VBox/ActionRow"]', scene)
-        self.assertIn('[node name="ReturnButton" type="Button" parent="RootMargin/VBox/ActionRow"]', scene)
+        self.assertIn('[node name="ActionRow" type="HBoxContainer" parent="RootMargin/RootSplit/MainVBox"]', scene)
+        self.assertIn('[node name="PassTurnButton" type="Button" parent="RootMargin/RootSplit/MainVBox/ActionRow"]', scene)
+        self.assertIn('[node name="ReturnButton" type="Button" parent="RootMargin/RootSplit/MainVBox/ActionRow"]', scene)
         self.assertLess(scene.index('name="ActionRow"'), scene.index('name="HandTitle"'))
 
     def test_battle_end_switches_from_pass_to_visible_return_button(self):

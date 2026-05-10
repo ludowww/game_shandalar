@@ -10,14 +10,14 @@ class BattleLogScrollStaticTests(unittest.TestCase):
     def test_battle_log_is_in_dedicated_scrollable_panel(self):
         scene = SCENE.read_text(encoding="utf-8")
         for snippet in [
-            '[node name="LogPanel" type="PanelContainer" parent="RootMargin/VBox"]',
-            '[node name="LogVBox" type="VBoxContainer" parent="RootMargin/VBox/LogPanel"]',
-            '[node name="LogTitle" type="Label" parent="RootMargin/VBox/LogPanel/LogVBox"]',
+            '[node name="LogPanel" type="PanelContainer" parent="RootMargin/RootSplit"]',
+            '[node name="LogVBox" type="VBoxContainer" parent="RootMargin/RootSplit/LogPanel"]',
+            '[node name="LogTitle" type="Label" parent="RootMargin/RootSplit/LogPanel/LogVBox"]',
             'text = "Journal du combat"',
-            '[node name="LogScroll" type="ScrollContainer" parent="RootMargin/VBox/LogPanel/LogVBox"]',
+            'custom_minimum_size = Vector2(280, 0)',
+            '[node name="LogScroll" type="ScrollContainer" parent="RootMargin/RootSplit/LogPanel/LogVBox"]',
             'vertical_scroll_mode = 1',
-            'custom_minimum_size = Vector2(0, 120)',
-            '[node name="LogLabel" type="Label" parent="RootMargin/VBox/LogPanel/LogVBox/LogScroll"]',
+            '[node name="LogLabel" type="Label" parent="RootMargin/RootSplit/LogPanel/LogVBox/LogScroll"]',
             'size_flags_vertical = 3',
             'autowrap_mode = 3',
         ]:
