@@ -57,7 +57,7 @@ func start_battle(enemy_id: String) -> void:
 
 	var enemy_data: Dictionary = enemies_by_id.get(enemy_id, {})
 	if enemy_data.is_empty():
-		log_label.text = "Erreur : ennemi inconnu %s" % enemy_id
+		append_log("Erreur : ennemi inconnu %s" % enemy_id, true)
 		show_battle_end_actions()
 		return
 
@@ -68,7 +68,7 @@ func start_battle(enemy_id: String) -> void:
 
 	player.setup("Joueur", GameState.player_life, player_deck_ids)
 	enemy.setup(str(enemy_data.get("name", enemy_id)), int(enemy_data.get("life", 10)), decks.get(str(enemy_data.get("deck_id", "")), []))
-	log_label.text = "Combat contre %s" % enemy.name
+	append_log("Combat contre %s" % enemy.name, true)
 	begin_player_turn()
 	refresh_ui()
 
@@ -84,6 +84,14 @@ func build_enemy_database(enemies_data: Array) -> Dictionary:
 		result[str(enemy_data.get("id", ""))] = enemy_data
 	return result
 
+
+func append_log(message: String, replace := false) -> void:
+	if replace or log_label.text == "":
+		log_label.text = message
+	else:
+		log_label.text += "\n" + message
+	scroll_log_to_bottom.call_deferred()
+
 func set_phase(phase_name: String) -> void:
 	current_phase = phase_name
 	if phase_label != null:
@@ -91,15 +99,15 @@ func set_phase(phase_name: String) -> void:
 
 func begin_player_turn() -> void:
 	set_phase(PHASE_BEGIN)
-	log_label.text += "\nDébut de tour joueur."
+	append_log("Début de tour joueur.")
 	set_phase(PHASE_UNTAP)
 	player.start_turn_resources()
-	log_label.text += "\nDégagement / reset ressources : mana disponible %d." % player.current_mana
+	append_log("Dégagement / reset ressources : mana disponible %d." % player.current_mana)
 	set_phase(PHASE_DRAW)
 	draw_player_card()
-	log_label.text += "\nPioche : tu pioches une carte."
+	append_log("Pioche : tu pioches une carte.")
 	set_phase(PHASE_MAIN)
-	log_label.text += "\nPhase principale : joue un terrain ou une carte avec ton mana."
+	append_log("Phase principale : joue un terrain ou une carte avec ton mana.")
 
 func play_player_card(card_index: int) -> void:
 	if battle_finished_state:
@@ -108,11 +116,11 @@ func play_player_card(card_index: int) -> void:
 	set_phase(PHASE_MAIN)
 	var card = player.play_card(card_index, card_database, enemy)
 	if card == null:
-		log_label.text = "Phase principale : Mana insuffisant ou terrain déjà joué."
+		append_log("Phase principale : Mana insuffisant ou terrain déjà joué.")
 		refresh_ui()
 		return
 
-	log_label.text = "Phase principale : tu joues %s." % str(card.get("name", "Carte"))
+	append_log("Phase principale : tu joues %s." % str(card.get("name", "Carte")))
 	if check_battle_end():
 		refresh_ui()
 		return
@@ -123,12 +131,12 @@ func end_player_turn() -> void:
 	if battle_finished_state:
 		return
 
-	log_label.text = "Tu termines ta phase principale."
+	append_log("Tu termines ta phase principale.")
 	if resolve_player_combat_step():
 		refresh_ui()
 		return
 	set_phase(PHASE_END)
-	log_label.text += "\nFin de tour joueur."
+	append_log("Fin de tour joueur.")
 	enemy_turn()
 	if not battle_finished_state:
 		begin_player_turn()
@@ -136,7 +144,7 @@ func end_player_turn() -> void:
 
 func resolve_player_combat_step() -> bool:
 	set_phase(PHASE_COMBAT)
-	log_label.text += "\nCombat automatique : tes créatures attaquent."
+	append_log("Combat automatique : tes créatures attaquent.")
 	resolve_creature_attack(player, enemy, "Tes")
 	player.ready_creatures_for_next_turn()
 	return check_battle_end()
@@ -146,33 +154,33 @@ func draw_player_card() -> void:
 
 func enemy_turn() -> void:
 	set_phase(PHASE_BEGIN)
-	log_label.text += "\nDébut de tour ennemi."
+	append_log("Début de tour ennemi.")
 	set_phase(PHASE_UNTAP)
 	enemy.start_turn_resources()
-	log_label.text += "\n%s prépare son mana disponible (%d)." % [enemy.name, enemy.current_mana]
+	append_log("%s prépare son mana disponible (%d)." % [enemy.name, enemy.current_mana])
 	set_phase(PHASE_DRAW)
 	enemy.draw_card()
-	log_label.text += "\n%s pioche." % enemy.name
+	append_log("%s pioche." % enemy.name)
 	set_phase(PHASE_MAIN)
 	var card_index := ai.choose_card_index(enemy, card_database)
 	if card_index == -1:
-		log_label.text += "\n%s ne peut pas jouer." % enemy.name
+		append_log("%s ne peut pas jouer." % enemy.name)
 	else:
 		var card = enemy.play_card(card_index, card_database, player)
 		if card != null:
-			log_label.text += "\n%s joue %s." % [enemy.name, str(card.get("name", "Carte"))]
+			append_log("%s joue %s." % [enemy.name, str(card.get("name", "Carte"))])
 	set_phase(PHASE_COMBAT)
-	log_label.text += "\nCombat automatique : les créatures ennemies attaquent."
+	append_log("Combat automatique : les créatures ennemies attaquent.")
 	resolve_creature_attack(enemy, player, enemy.name)
 	enemy.ready_creatures_for_next_turn()
 	check_battle_end()
 	set_phase(PHASE_END)
-	log_label.text += "\nFin de tour ennemi."
+	append_log("Fin de tour ennemi.")
 
 func resolve_creature_attack(attacker, defender, attacker_label: String) -> void:
 	var damage: int = attacker.attack_with_creatures(defender)
 	if damage > 0:
-		log_label.text += "\n%s %s pour %d." % [attacker_label, ATTACK_LOG_TEXT, damage]
+		append_log("%s %s pour %d." % [attacker_label, ATTACK_LOG_TEXT, damage])
 
 func check_battle_end() -> bool:
 	if enemy.is_dead():
@@ -183,9 +191,9 @@ func check_battle_end() -> bool:
 		if is_current_enemy_boss():
 			GameState.pending_reward_pool = ""
 			GameState.finish_run(true)
-			log_label.text += "\nVictoire finale."
+			append_log("Victoire finale.")
 		else:
-			log_label.text += "\nVictoire."
+			append_log("Victoire.")
 		show_battle_end_actions()
 		return true
 	if player.is_dead():
@@ -193,7 +201,7 @@ func check_battle_end() -> bool:
 		GameState.last_battle_won = false
 		GameState.player_life = 0
 		GameState.finish_run(false)
-		log_label.text += "\nDéfaite."
+		append_log("Défaite.")
 		show_battle_end_actions()
 		return true
 	return false

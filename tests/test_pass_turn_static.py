@@ -19,7 +19,7 @@ class PassTurnStaticTests(unittest.TestCase):
             "@onready var pass_turn_button: Button = %PassTurnButton",
             "pass_turn_button.pressed.connect(end_player_turn)",
             "func end_player_turn() -> void:",
-            'log_label.text = "Tu termines ta phase principale."',
+            'append_log("Tu termines ta phase principale.")',
             "resolve_player_combat_step()",
             "resolve_creature_attack(player, enemy, \"Tes\")",
             "player.ready_creatures_for_next_turn()",

@@ -64,7 +64,7 @@ text = "Ennemi : 20 PV"
 
 [node name="LogPanel" type="PanelContainer" parent="RootMargin/VBox"]
 layout_mode = 2
-size_flags_vertical = 3
+custom_minimum_size = Vector2(0, 150)
 
 [node name="LogVBox" type="VBoxContainer" parent="RootMargin/VBox/LogPanel"]
 layout_mode = 2
@@ -78,7 +78,6 @@ horizontal_alignment = 1
 unique_name_in_owner = true
 layout_mode = 2
 custom_minimum_size = Vector2(0, 120)
-size_flags_vertical = 3
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 1
 
@@ -116,9 +115,17 @@ layout_mode = 2
 text = "Champ de bataille ennemi"
 horizontal_alignment = 1
 
-[node name="EnemyBattlefieldContainer" type="HBoxContainer" parent="RootMargin/VBox"]
+[node name="EnemyBattlefieldScroll" type="ScrollContainer" parent="RootMargin/VBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 76)
+size_flags_horizontal = 3
+horizontal_scroll_mode = 1
+vertical_scroll_mode = 0
+
+[node name="EnemyBattlefieldContainer" type="HBoxContainer" parent="RootMargin/VBox/EnemyBattlefieldScroll"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
 theme_override_constants/separation = 12
 alignment = 1
 
@@ -127,9 +134,17 @@ layout_mode = 2
 text = "Champ de bataille joueur"
 horizontal_alignment = 1
 
-[node name="PlayerBattlefieldContainer" type="HBoxContainer" parent="RootMargin/VBox"]
+[node name="PlayerBattlefieldScroll" type="ScrollContainer" parent="RootMargin/VBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 76)
+size_flags_horizontal = 3
+horizontal_scroll_mode = 1
+vertical_scroll_mode = 0
+
+[node name="PlayerBattlefieldContainer" type="HBoxContainer" parent="RootMargin/VBox/PlayerBattlefieldScroll"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
 theme_override_constants/separation = 12
 alignment = 1
 
@@ -155,6 +170,7 @@ horizontal_alignment = 1
 
 [node name="HandScroll" type="ScrollContainer" parent="RootMargin/VBox"]
 layout_mode = 2
+custom_minimum_size = Vector2(0, 150)
 size_flags_horizontal = 3
 horizontal_scroll_mode = 1
 vertical_scroll_mode = 0
