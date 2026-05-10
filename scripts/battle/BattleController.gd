@@ -26,9 +26,11 @@ var data_loader := DataLoaderScript.new()
 @onready var mana_label: Label = %ManaLabel
 @onready var hand_container: HBoxContainer = %HandContainer
 @onready var log_label: Label = %LogLabel
+@onready var pass_turn_button: Button = %PassTurnButton
 @onready var return_button: Button = %ReturnButton
 
 func _ready() -> void:
+	pass_turn_button.pressed.connect(end_player_turn)
 	return_button.pressed.connect(_on_return_button_pressed)
 	return_button.visible = false
 	start_battle(GameState.current_enemy_id)
@@ -90,6 +92,22 @@ func play_player_card(card_index: int) -> void:
 		return
 
 	enemy_turn()
+	player.start_turn_resources()
+	refresh_ui()
+
+func end_player_turn() -> void:
+	if battle_finished_state:
+		return
+
+	log_label.text = "Tu termines ton tour."
+	resolve_creature_attack(player, enemy, "Tes")
+	player.ready_creatures_for_next_turn()
+	if check_battle_end():
+		refresh_ui()
+		return
+
+	enemy_turn()
+	player.start_turn_resources()
 	refresh_ui()
 
 func draw_player_card() -> void:
@@ -142,6 +160,7 @@ func refresh_ui() -> void:
 	player_life_label.text = "Joueur : %d PV" % player.life
 	enemy_life_label.text = "%s : %d PV" % [enemy.name, enemy.life]
 	enemy_name_label.text = enemy.name
+	pass_turn_button.disabled = battle_finished_state
 	refresh_battlefield_ui()
 	refresh_zone_summary_ui()
 	refresh_mana_ui()
