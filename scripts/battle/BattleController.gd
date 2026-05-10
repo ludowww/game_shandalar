@@ -36,6 +36,7 @@ var data_loader := DataLoaderScript.new()
 @onready var mana_label: Label = %ManaLabel
 @onready var phase_label: Label = %PhaseLabel
 @onready var hand_container: HBoxContainer = %HandContainer
+@onready var log_scroll: ScrollContainer = %LogScroll
 @onready var log_label: Label = %LogLabel
 @onready var pass_turn_button: Button = %PassTurnButton
 @onready var return_button: Button = %ReturnButton
@@ -207,6 +208,7 @@ func refresh_ui() -> void:
 	refresh_battlefield_ui()
 	refresh_zone_summary_ui()
 	refresh_mana_ui()
+	scroll_log_to_bottom.call_deferred()
 
 	for child in hand_container.get_children():
 		child.queue_free()
@@ -221,6 +223,14 @@ func refresh_ui() -> void:
 		button.disabled = battle_finished_state or not player.can_play_card(card)
 		button.pressed.connect(play_player_card.bind(i))
 		hand_container.add_child(button)
+
+func scroll_log_to_bottom() -> void:
+	if log_scroll == null or log_label == null:
+		return
+	log_scroll.call_deferred("ensure_control_visible", log_label)
+	var scrollbar := log_scroll.get_v_scroll_bar()
+	if scrollbar != null:
+		scrollbar.value = scrollbar.max_value
 
 func configure_card_button(button: Button, text: String, tooltip: String, minimum_size: Vector2) -> void:
 	button.custom_minimum_size = minimum_size

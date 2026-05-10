@@ -62,9 +62,31 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "Ennemi : 20 PV"
 
-[node name="LogLabel" type="Label" parent="RootMargin/VBox"]
+[node name="LogPanel" type="PanelContainer" parent="RootMargin/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="LogVBox" type="VBoxContainer" parent="RootMargin/VBox/LogPanel"]
+layout_mode = 2
+
+[node name="LogTitle" type="Label" parent="RootMargin/VBox/LogPanel/LogVBox"]
+layout_mode = 2
+text = "Journal du combat"
+horizontal_alignment = 1
+
+[node name="LogScroll" type="ScrollContainer" parent="RootMargin/VBox/LogPanel/LogVBox"]
 unique_name_in_owner = true
 layout_mode = 2
+custom_minimum_size = Vector2(0, 120)
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 1
+
+[node name="LogLabel" type="Label" parent="RootMargin/VBox/LogPanel/LogVBox/LogScroll"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 text = "Journal combat"
 autowrap_mode = 3
 
