@@ -79,6 +79,7 @@ func play_player_card(card_index: int) -> void:
 	log_label.text = "Tu joues %s." % str(card.get("name", "Carte"))
 	draw_player_card()
 	resolve_creature_attack(player, enemy, "Tes")
+	player.ready_creatures_for_next_turn()
 	if check_battle_end():
 		refresh_ui()
 		return
@@ -94,12 +95,12 @@ func enemy_turn() -> void:
 	var card_index := ai.choose_card_index(enemy)
 	if card_index == -1:
 		log_label.text += "\n%s ne peut pas jouer." % enemy.name
-		return
-
-	var card = enemy.play_card(card_index, card_database, player)
-	if card != null:
-		log_label.text += "\n%s joue %s." % [enemy.name, str(card.get("name", "Carte"))]
+	else:
+		var card = enemy.play_card(card_index, card_database, player)
+		if card != null:
+			log_label.text += "\n%s joue %s." % [enemy.name, str(card.get("name", "Carte"))]
 	resolve_creature_attack(enemy, player, enemy.name)
+	enemy.ready_creatures_for_next_turn()
 	check_battle_end()
 
 func resolve_creature_attack(attacker, defender, attacker_label: String) -> void:
@@ -158,9 +159,12 @@ func populate_battlefield(container: HBoxContainer, creatures: Array) -> void:
 		child.queue_free()
 	for creature in creatures:
 		var label := Label.new()
-		label.custom_minimum_size = Vector2(120, 48)
+		label.custom_minimum_size = Vector2(120, 64)
 		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		label.text = "%s\n%d/%d" % [str(creature.get("name", "Créature")), int(creature.get("attack", 0)), int(creature.get("health", 0))]
+		var status := ""
+		if bool(creature.get("summoning_sick", false)):
+			status = "\nMal d'invocation"
+		label.text = ("%s\n%d/%d" % [str(creature.get("name", "Créature")), int(creature.get("attack", 0)), int(creature.get("health", 0))]) + status
 		container.add_child(label)
 
 func is_current_enemy_boss() -> bool:

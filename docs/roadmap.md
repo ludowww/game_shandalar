@@ -32,4 +32,5 @@ carte → déplacement → rencontre → combat abstrait → récompense → dec
 14. T014 — Marchand simple
 15. T015 — Feedback UI carte aventure
 16. T016 — Créatures persistantes
-17. T017 — Premier équilibrage V1
+17. T016b — Mal d’invocation
+18. T017 — Premier équilibrage V1

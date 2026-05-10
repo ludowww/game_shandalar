@@ -48,17 +48,25 @@ func summon_creature(card: Dictionary) -> void:
 		"name": str(card.get("name", card_id)),
 		"attack": int(card.get("attack", 0)),
 		"health": int(card.get("health", 1)),
-		"max_health": int(card.get("health", 1))
+		"max_health": int(card.get("health", 1)),
+		"summoning_sick": true
 	}
 	battlefield.append(creature)
 
 func attack_with_creatures(target) -> int:
 	var total_damage := 0
 	for creature in battlefield:
+		if bool(creature.get("summoning_sick", false)):
+			continue
 		total_damage += int(creature.get("attack", 0))
 	if total_damage > 0:
 		target.life = max(0, target.life - total_damage)
 	return total_damage
+
+func ready_creatures_for_next_turn() -> void:
+	for creature in battlefield:
+		if bool(creature.get("summoning_sick", false)):
+			creature["summoning_sick"] = false
 
 func move_to_graveyard(card_id: String) -> void:
 	if card_id != "":
