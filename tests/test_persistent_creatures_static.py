@@ -37,8 +37,9 @@ class PersistentCreaturesStaticTests(unittest.TestCase):
             '"health": int(card.get("health", 1))',
             "battlefield.append(creature)",
             "func attack_with_creatures(target) -> int:",
+            "func get_ready_attackers() -> Array:",
             "for creature in battlefield:",
-            "target.life = max(0, target.life - total_damage)",
+            "defender.life = max(0, defender.life - unblocked_damage)",
             "func move_to_graveyard(card_id: String) -> void:",
             "graveyard.append(card_id)",
         ]:
@@ -58,7 +59,7 @@ class PersistentCreaturesStaticTests(unittest.TestCase):
         content = BATTLE.read_text(encoding="utf-8")
         for snippet in [
             "func resolve_creature_attack(attacker, defender, attacker_label: String) -> void:",
-            "var damage: int = attacker.attack_with_creatures(defender)",
+            "var result: Dictionary = attacker.resolve_simplified_combat_against(defender)",
             '"créatures attaquent"',
             "resolve_creature_attack(player, enemy, \"Tes\")",
             "resolve_creature_attack(enemy, player, enemy.name)",

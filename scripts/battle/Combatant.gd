@@ -109,14 +109,64 @@ func summon_creature(card: Dictionary) -> void:
 	battlefield.append(creature)
 
 func attack_with_creatures(target) -> int:
-	var total_damage := 0
+	var result := resolve_simplified_combat_against(target)
+	return int(result.get("unblocked_damage", 0))
+
+func get_ready_attackers() -> Array:
+	var attackers: Array = []
 	for creature in battlefield:
 		if bool(creature.get("summoning_sick", false)):
 			continue
-		total_damage += int(creature.get("attack", 0))
-	if total_damage > 0:
-		target.life = max(0, target.life - total_damage)
-	return total_damage
+		attackers.append(creature)
+	return attackers
+
+func assign_simple_blockers(attackers: Array) -> Dictionary:
+	var blockers_by_attacker := {}
+	var blocker_index := 0
+	for attacker in attackers:
+		if blocker_index >= battlefield.size():
+			break
+		var blocker: Dictionary = battlefield[blocker_index]
+		blockers_by_attacker[attacker] = blocker
+		blocker_index += 1
+	return blockers_by_attacker
+
+func resolve_simplified_combat_against(defender) -> Dictionary:
+	var attackers := get_ready_attackers()
+	var blockers_by_attacker: Dictionary = defender.assign_simple_blockers(attackers)
+	var unblocked_damage := 0
+	var blocked_count := 0
+	for attacker in attackers:
+		if blockers_by_attacker.has(attacker):
+			var blocker: Dictionary = blockers_by_attacker[attacker]
+			attacker["health"] = int(attacker.get("health", 0)) - int(blocker.get("attack", 0))
+			blocker["health"] = int(blocker.get("health", 0)) - int(attacker.get("attack", 0))
+			blocked_count += 1
+		else:
+			unblocked_damage += int(attacker.get("attack", 0))
+	if unblocked_damage > 0:
+		defender.life = max(0, defender.life - unblocked_damage)
+	var dead_attackers := remove_dead_creatures()
+	var dead_blockers: int = defender.remove_dead_creatures()
+	return {
+		"attackers": attackers.size(),
+		"blocked_count": blocked_count,
+		"unblocked_damage": unblocked_damage,
+		"dead_attackers": dead_attackers,
+		"dead_blockers": dead_blockers
+	}
+
+func remove_dead_creatures() -> int:
+	var survivors: Array = []
+	var dead_count := 0
+	for creature in battlefield:
+		if int(creature.get("health", 0)) <= 0:
+			graveyard.append(str(creature.get("id", "")))
+			dead_count += 1
+		else:
+			survivors.append(creature)
+	battlefield = survivors
+	return dead_count
 
 func ready_creatures_for_next_turn() -> void:
 	for creature in battlefield:

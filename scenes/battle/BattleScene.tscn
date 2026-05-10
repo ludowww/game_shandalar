@@ -89,6 +89,12 @@ text = "Phase : Début de tour"
 horizontal_alignment = 1
 autowrap_mode = 3
 
+[node name="CombatRulesLabel" type="Label" parent="RootMargin/RootSplit/MainVBox"]
+layout_mode = 2
+text = "Combat automatique — Blocage automatique simple"
+horizontal_alignment = 1
+autowrap_mode = 3
+
 [node name="EnemyBattlefieldTitle" type="Label" parent="RootMargin/RootSplit/MainVBox"]
 layout_mode = 2
 text = "Champ de bataille ennemi"

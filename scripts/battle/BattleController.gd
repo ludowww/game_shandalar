@@ -178,9 +178,20 @@ func enemy_turn() -> void:
 	append_log("Fin de tour ennemi.")
 
 func resolve_creature_attack(attacker, defender, attacker_label: String) -> void:
-	var damage: int = attacker.attack_with_creatures(defender)
-	if damage > 0:
-		append_log("%s %s pour %d." % [attacker_label, ATTACK_LOG_TEXT, damage])
+	var result: Dictionary = attacker.resolve_simplified_combat_against(defender)
+	var attackers := int(result.get("attackers", 0))
+	var blocked_count := int(result.get("blocked_count", 0))
+	var unblocked_damage := int(result.get("unblocked_damage", 0))
+	var dead_attackers := int(result.get("dead_attackers", 0))
+	var dead_blockers := int(result.get("dead_blockers", 0))
+	if attackers == 0:
+		append_log("%s n'ont aucune créature prête à attaquer." % attacker_label)
+		return
+	append_log("%s %s : %d attaquants, %d bloquées." % [attacker_label, ATTACK_LOG_TEXT, attackers, blocked_count])
+	if unblocked_damage > 0:
+		append_log("%s créatures non bloqués infligent %d." % [attacker_label, unblocked_damage])
+	if dead_attackers + dead_blockers > 0:
+		append_log("%d attaquants et %d bloqueurs meurent au combat." % [dead_attackers, dead_blockers])
 
 func check_battle_end() -> bool:
 	if enemy.is_dead():
