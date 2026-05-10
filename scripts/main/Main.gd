@@ -3,6 +3,7 @@ extends Control
 const WORLD_MAP_SCENE := preload("res://scenes/world/WorldMap.tscn")
 const BATTLE_SCENE := preload("res://scenes/battle/BattleScene.tscn")
 const REWARD_SCENE := preload("res://scenes/reward/RewardScene.tscn")
+const MERCHANT_SCENE := preload("res://scenes/merchant/MerchantScene.tscn")
 const RUN_RESULT_SCENE := preload("res://scenes/ui/RunResult.tscn")
 
 var current_scene: Node = null
@@ -20,6 +21,8 @@ func show_world_map() -> void:
 		current_scene.battle_requested.connect(show_battle)
 	if current_scene.has_signal("reward_requested"):
 		current_scene.reward_requested.connect(show_reward)
+	if current_scene.has_signal("shop_requested"):
+		current_scene.shop_requested.connect(show_merchant)
 
 func show_battle() -> void:
 	_replace_scene(BATTLE_SCENE)
@@ -38,6 +41,11 @@ func show_reward() -> void:
 	_replace_scene(REWARD_SCENE)
 	if current_scene.has_signal("reward_finished"):
 		current_scene.reward_finished.connect(show_world_map)
+
+func show_merchant() -> void:
+	_replace_scene(MERCHANT_SCENE)
+	if current_scene.has_signal("merchant_finished"):
+		current_scene.merchant_finished.connect(show_world_map)
 
 func show_run_result() -> void:
 	_replace_scene(RUN_RESULT_SCENE)

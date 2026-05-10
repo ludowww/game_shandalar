@@ -2,6 +2,7 @@ extends Control
 
 signal battle_requested
 signal reward_requested
+signal shop_requested
 
 const DataLoaderScript = preload("res://scripts/core/DataLoader.gd")
 const TILE_SIZE := 44
@@ -190,6 +191,15 @@ func handle_special_tile(tile: Dictionary, grid_position: Vector2i) -> void:
 			GameState.mark_special_tile_used(grid_position)
 			status_label.text = "%s — trésor trouvé." % label
 			reward_requested.emit()
+		"merchant":
+			if GameState.is_special_tile_used(grid_position):
+				status_label.text = "%s — marchand déjà visité." % label
+				return
+			GameState.pending_shop_pool = str(tile.get("shop_pool", "weak_reward"))
+			GameState.pending_shop_cost = int(tile.get("shop_cost", 1))
+			GameState.pending_shop_tile_key = GameState.get_special_tile_key(grid_position)
+			status_label.text = "%s — marchand : %d or par carte." % [label, GameState.pending_shop_cost]
+			shop_requested.emit()
 		_:
 			status_label.text = "%s — rien à faire pour l'instant." % label
 

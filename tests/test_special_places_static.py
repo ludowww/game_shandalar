@@ -22,15 +22,14 @@ class SpecialPlacesStaticTests(unittest.TestCase):
             if tile["type"] in ["village", "sanctuary", "treasure"]
         }
 
-        self.assertEqual(effects_by_type["village"], "heal")
+        self.assertEqual(effects_by_type["village"], "merchant")
         self.assertEqual(effects_by_type["sanctuary"], "full_heal")
         self.assertEqual(effects_by_type["treasure"], "reward")
 
         for tile in self.tiles:
             if tile["type"] == "village":
-                self.assertIn("heal_amount", tile)
-                self.assertGreater(tile["heal_amount"], 0)
-                self.assertTrue(tile.get("one_shot"))
+                self.assertIn("shop_pool", tile)
+                self.assertIn("shop_cost", tile)
             if tile["type"] in ["sanctuary", "treasure"]:
                 self.assertTrue(tile.get("one_shot"))
             if tile["type"] == "treasure":

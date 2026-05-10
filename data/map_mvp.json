@@ -91,10 +91,11 @@
       "y": 6,
       "type": "village",
       "label": "Hameau du gué",
-      "description": "Lieu sûr ; marchand prévu dans une version future. Repos: récupère 3 PV une seule fois.",
-      "effect": "heal",
-      "heal_amount": 3,
-      "one_shot": true
+      "description": "Lieu sûr ; marchand prévu dans une version future. Marchand: achète une carte contre de l’or.",
+      "effect": "merchant",
+      "one_shot": false,
+      "shop_pool": "medium_reward",
+      "shop_cost": 2
     },
     {
       "x": 5,
@@ -165,10 +166,11 @@
       "y": 3,
       "type": "village",
       "label": "Village des brumes",
-      "description": "Dernier lieu sûr avant le sceau. Repos: récupère 3 PV une seule fois.",
-      "effect": "heal",
-      "heal_amount": 3,
-      "one_shot": true
+      "description": "Dernier lieu sûr avant le sceau. Marchand: achète une carte contre de l’or.",
+      "effect": "merchant",
+      "one_shot": false,
+      "shop_pool": "medium_reward",
+      "shop_cost": 2
     },
     {
       "x": 12,
