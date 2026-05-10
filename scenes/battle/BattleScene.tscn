@@ -104,6 +104,21 @@ layout_mode = 2
 theme_override_constants/separation = 12
 alignment = 1
 
+[node name="ActionRow" type="HBoxContainer" parent="RootMargin/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="PassTurnButton" type="Button" parent="RootMargin/VBox/ActionRow"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Terminer le tour"
+
+[node name="ReturnButton" type="Button" parent="RootMargin/VBox/ActionRow"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Retour carte"
+
 [node name="HandTitle" type="Label" parent="RootMargin/VBox"]
 layout_mode = 2
 text = "Main du joueur — clique une carte"
@@ -121,13 +136,3 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 12
 alignment = 1
-
-[node name="PassTurnButton" type="Button" parent="RootMargin/VBox"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Terminer le tour"
-
-[node name="ReturnButton" type="Button" parent="RootMargin/VBox"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Retour carte"

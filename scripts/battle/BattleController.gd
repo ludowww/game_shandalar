@@ -33,6 +33,7 @@ func _ready() -> void:
 	pass_turn_button.pressed.connect(end_player_turn)
 	return_button.pressed.connect(_on_return_button_pressed)
 	return_button.visible = false
+	return_button.disabled = true
 	start_battle(GameState.current_enemy_id)
 
 func start_battle(enemy_id: String) -> void:
@@ -45,7 +46,7 @@ func start_battle(enemy_id: String) -> void:
 	var enemy_data: Dictionary = enemies_by_id.get(enemy_id, {})
 	if enemy_data.is_empty():
 		log_label.text = "Erreur : ennemi inconnu %s" % enemy_id
-		return_button.visible = true
+		show_battle_end_actions()
 		return
 
 	var player_deck_ids: Array = GameState.player_deck
@@ -144,7 +145,7 @@ func check_battle_end() -> bool:
 			log_label.text += "\nVictoire finale."
 		else:
 			log_label.text += "\nVictoire."
-		return_button.visible = true
+		show_battle_end_actions()
 		return true
 	if player.is_dead():
 		battle_finished_state = true
@@ -152,7 +153,7 @@ func check_battle_end() -> bool:
 		GameState.player_life = 0
 		GameState.finish_run(false)
 		log_label.text += "\nDéfaite."
-		return_button.visible = true
+		show_battle_end_actions()
 		return true
 	return false
 
@@ -160,6 +161,7 @@ func refresh_ui() -> void:
 	player_life_label.text = "Joueur : %d PV" % player.life
 	enemy_life_label.text = "%s : %d PV" % [enemy.name, enemy.life]
 	enemy_name_label.text = enemy.name
+	pass_turn_button.visible = not battle_finished_state
 	pass_turn_button.disabled = battle_finished_state
 	refresh_battlefield_ui()
 	refresh_zone_summary_ui()
@@ -187,6 +189,12 @@ func configure_card_button(button: Button, text: String, tooltip: String, minimu
 	button.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	button.tooltip_text = tooltip
 	button.text = text
+
+func show_battle_end_actions() -> void:
+	pass_turn_button.visible = false
+	pass_turn_button.disabled = true
+	return_button.visible = true
+	return_button.disabled = false
 
 func refresh_battlefield_ui() -> void:
 	populate_battlefield(player_battlefield_container, player.battlefield)
