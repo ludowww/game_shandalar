@@ -13,7 +13,7 @@ class GameStateStaticTests(unittest.TestCase):
         expected_snippets = [
             "extends Node",
             "var player_position := Vector2i(1, 1)",
-            "var player_life := 20",
+            "var player_life := MAX_PLAYER_LIFE",
             "var player_deck: Array = []",
             "var defeated_encounters: Array = []",
             "var current_enemy_id := \"\"",

@@ -18,6 +18,8 @@ func show_world_map() -> void:
 	_replace_scene(WORLD_MAP_SCENE)
 	if current_scene.has_signal("battle_requested"):
 		current_scene.battle_requested.connect(show_battle)
+	if current_scene.has_signal("reward_requested"):
+		current_scene.reward_requested.connect(show_reward)
 
 func show_battle() -> void:
 	_replace_scene(BATTLE_SCENE)

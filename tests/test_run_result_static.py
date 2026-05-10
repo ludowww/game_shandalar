@@ -69,7 +69,7 @@ class RunResultStaticTests(unittest.TestCase):
             'run_won = false',
             'cards_added = 0',
             'defeated_encounters = []',
-            'player_life = 20',
+            'player_life = MAX_PLAYER_LIFE',
         ]:
             self.assertIn(snippet, content)
 

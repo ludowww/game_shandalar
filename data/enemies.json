@@ -14,9 +14,37 @@
     "reward_pool": "weak_reward"
   },
   {
+    "id": "goblin_patrol_01",
+    "name": "Patrouille gobeline",
+    "life": 13,
+    "deck_id": "goblin_weak",
+    "reward_pool": "weak_reward"
+  },
+  {
+    "id": "marsh_pack_01",
+    "name": "Meute des marais",
+    "life": 14,
+    "deck_id": "beast_weak",
+    "reward_pool": "weak_reward"
+  },
+  {
     "id": "mage_medium_01",
     "name": "Mage solitaire",
     "life": 16,
+    "deck_id": "mage_medium",
+    "reward_pool": "medium_reward"
+  },
+  {
+    "id": "apprentice_tower_01",
+    "name": "Apprenti de la tour",
+    "life": 17,
+    "deck_id": "mage_medium",
+    "reward_pool": "medium_reward"
+  },
+  {
+    "id": "bridge_guard_01",
+    "name": "Gardien du pont",
+    "life": 18,
     "deck_id": "mage_medium",
     "reward_pool": "medium_reward"
   },

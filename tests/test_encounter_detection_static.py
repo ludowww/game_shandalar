@@ -42,12 +42,12 @@ class EncounterDetectionStaticTests(unittest.TestCase):
             '"boss":',
             '"reward":',
             "GameState.current_enemy_id = str(tile.get(\"enemy_id\", \"\"))",
-            "GameState.current_tile_type = tile_type",
+            "GameState.current_tile_type = interaction_type",
             "GameState.reward_pending = true",
             "GameState.is_encounter_defeated(GameState.current_enemy_id)",
-            'status_label.text = "Rencontre : %s"',
-            'status_label.text = "Boss : %s"',
-            'status_label.text = "Récompense trouvée."',
+            'status_label.text = "%s : %s"',
+            'status_label.text = "Boss final : %s"',
+            'status_label.text = "%s — trésor trouvé."',
         ]
 
         for snippet in expected_snippets:

@@ -27,4 +27,6 @@ carte → déplacement → rencontre → combat abstrait → récompense → dec
 9. T009 — Connecter combat, victoire et retour carte
 10. T010 — Système de récompense
 11. T011 — Écran de fin de run
-12. T012 — Premier équilibrage jouable
+12. T012 — Carte aventure Shandalar-like
+13. T013 — Lieux spéciaux interactifs
+14. T014 — Premier équilibrage V1

@@ -24,7 +24,7 @@ class PlayerMovementStaticTests(unittest.TestCase):
 
         expected_snippets = [
             "extends ColorRect",
-            "const TILE_SIZE := 64",
+            "const TILE_SIZE := 44",
             "const TILE_GAP := 4",
             "func set_grid_position(grid_position: Vector2i) -> void:",
             "GameState.player_position = grid_position",

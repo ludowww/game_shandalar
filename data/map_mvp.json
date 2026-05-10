@@ -1,13 +1,192 @@
 {
-  "width": 8,
-  "height": 8,
-  "start_position": [1, 1],
+  "theme": "shandalar_adventure_v1",
+  "width": 15,
+  "height": 9,
+  "start_position": [
+    1,
+    4
+  ],
+  "legend": [
+    {
+      "type": "start",
+      "symbol": "S",
+      "label": "Départ",
+      "description": "Campement du joueur"
+    },
+    {
+      "type": "enemy_weak",
+      "symbol": "g",
+      "label": "Ennemi faible",
+      "description": "Rencontre conseillée en début de route"
+    },
+    {
+      "type": "enemy_medium",
+      "symbol": "M",
+      "label": "Ennemi moyen",
+      "description": "Combat plus risqué, meilleure récompense"
+    },
+    {
+      "type": "village",
+      "symbol": "V",
+      "label": "Village",
+      "description": "Lieu sûr, marchand prévu plus tard"
+    },
+    {
+      "type": "sanctuary",
+      "symbol": "+",
+      "label": "Sanctuaire",
+      "description": "Lieu spécial sans mécanique complexe pour l'instant"
+    },
+    {
+      "type": "treasure",
+      "symbol": "T",
+      "label": "Trésor",
+      "description": "Récompense libre sur la carte"
+    },
+    {
+      "type": "boss",
+      "symbol": "B",
+      "label": "Boss",
+      "description": "Gardien final accessible mais dangereux"
+    }
+  ],
   "tiles": [
-    { "x": 1, "y": 1, "type": "start" },
-    { "x": 3, "y": 1, "type": "enemy", "enemy_id": "goblin_weak_01" },
-    { "x": 5, "y": 2, "type": "enemy", "enemy_id": "beast_weak_01" },
-    { "x": 2, "y": 5, "type": "enemy", "enemy_id": "mage_medium_01" },
-    { "x": 4, "y": 4, "type": "reward" },
-    { "x": 6, "y": 6, "type": "boss", "enemy_id": "boss_seal_guardian" }
+    {
+      "x": 1,
+      "y": 4,
+      "type": "start",
+      "label": "Camp du mage",
+      "description": "Point de départ de l'expédition."
+    },
+    {
+      "x": 2,
+      "y": 3,
+      "type": "enemy_weak",
+      "enemy_id": "goblin_weak_01",
+      "danger": "weak",
+      "label": "Éclaireur gobelin",
+      "description": "Premier combat léger sur la route nord."
+    },
+    {
+      "x": 2,
+      "y": 5,
+      "type": "enemy_weak",
+      "enemy_id": "beast_weak_01",
+      "danger": "weak",
+      "label": "Bête errante",
+      "description": "Premier combat léger sur la route sud."
+    },
+    {
+      "x": 4,
+      "y": 2,
+      "type": "treasure",
+      "reward_pool": "weak_reward",
+      "label": "Cache oubliée",
+      "description": "Un petit coffre attire les détours. Trésor: ouvre un choix de carte une seule fois.",
+      "effect": "reward",
+      "one_shot": true
+    },
+    {
+      "x": 4,
+      "y": 6,
+      "type": "village",
+      "label": "Hameau du gué",
+      "description": "Lieu sûr ; marchand prévu dans une version future. Repos: récupère 3 PV une seule fois.",
+      "effect": "heal",
+      "heal_amount": 3,
+      "one_shot": true
+    },
+    {
+      "x": 5,
+      "y": 4,
+      "type": "enemy_weak",
+      "enemy_id": "goblin_patrol_01",
+      "danger": "weak",
+      "label": "Patrouille gobeline",
+      "description": "Route centrale, encore abordable."
+    },
+    {
+      "x": 7,
+      "y": 1,
+      "type": "sanctuary",
+      "label": "Sanctuaire bleu",
+      "description": "Repère visuel de la branche nord. Sanctuaire: restaure tous les PV une seule fois.",
+      "effect": "full_heal",
+      "one_shot": true
+    },
+    {
+      "x": 7,
+      "y": 4,
+      "type": "enemy_medium",
+      "enemy_id": "mage_medium_01",
+      "danger": "medium",
+      "label": "Mage rival",
+      "description": "Premier vrai palier de danger."
+    },
+    {
+      "x": 7,
+      "y": 7,
+      "type": "enemy_weak",
+      "enemy_id": "marsh_pack_01",
+      "danger": "weak",
+      "label": "Meute des marais",
+      "description": "Branche sud plus longue mais plus sûre."
+    },
+    {
+      "x": 9,
+      "y": 2,
+      "type": "enemy_medium",
+      "enemy_id": "apprentice_tower_01",
+      "danger": "medium",
+      "label": "Tour de l'apprenti",
+      "description": "Combat moyen gardant un raccourci."
+    },
+    {
+      "x": 9,
+      "y": 6,
+      "type": "treasure",
+      "reward_pool": "weak_reward",
+      "label": "Ruines dorées",
+      "description": "Récompense visible avant la fin. Trésor: ouvre un choix de carte une seule fois.",
+      "effect": "reward",
+      "one_shot": true
+    },
+    {
+      "x": 10,
+      "y": 4,
+      "type": "enemy_medium",
+      "enemy_id": "bridge_guard_01",
+      "danger": "medium",
+      "label": "Pont gardé",
+      "description": "Passage direct vers le boss."
+    },
+    {
+      "x": 12,
+      "y": 3,
+      "type": "village",
+      "label": "Village des brumes",
+      "description": "Dernier lieu sûr avant le sceau. Repos: récupère 3 PV une seule fois.",
+      "effect": "heal",
+      "heal_amount": 3,
+      "one_shot": true
+    },
+    {
+      "x": 12,
+      "y": 5,
+      "type": "sanctuary",
+      "label": "Autel fissuré",
+      "description": "Point spécial près de la zone finale. Sanctuaire: restaure tous les PV une seule fois.",
+      "effect": "full_heal",
+      "one_shot": true
+    },
+    {
+      "x": 13,
+      "y": 4,
+      "type": "boss",
+      "enemy_id": "boss_seal_guardian",
+      "danger": "boss",
+      "label": "Gardien du sceau",
+      "description": "Boss final : accessible tôt, mais risqué."
+    }
   ]
 }

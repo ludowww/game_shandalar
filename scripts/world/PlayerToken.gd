@@ -1,11 +1,11 @@
 extends ColorRect
 
-const TILE_SIZE := 64
+const TILE_SIZE := 44
 const TILE_GAP := 4
 
 func _ready() -> void:
 	custom_minimum_size = Vector2(TILE_SIZE, TILE_SIZE)
-	color = Color(0.15, 0.85, 0.35, 1.0)
+	color = Color(0.15, 0.85, 0.35, 0.82)
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 func set_grid_position(grid_position: Vector2i) -> void:

@@ -52,7 +52,7 @@ class GameDataStaticTests(unittest.TestCase):
         map_enemy_ids = {
             tile["enemy_id"]
             for tile in self.map_data["tiles"]
-            if tile.get("type") in ["enemy", "boss"]
+            if tile.get("type") in ["enemy", "enemy_weak", "enemy_medium", "boss"]
         }
 
         self.assertTrue(map_enemy_ids.issubset(enemy_ids))
