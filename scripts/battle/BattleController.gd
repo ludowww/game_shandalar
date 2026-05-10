@@ -23,6 +23,7 @@ var data_loader := DataLoaderScript.new()
 @onready var player_battlefield_container: HBoxContainer = %PlayerBattlefieldContainer
 @onready var enemy_battlefield_container: HBoxContainer = %EnemyBattlefieldContainer
 @onready var magic_zones_label: Label = %MagicZonesLabel
+@onready var mana_label: Label = %ManaLabel
 @onready var hand_container: HBoxContainer = %HandContainer
 @onready var log_label: Label = %LogLabel
 @onready var return_button: Button = %ReturnButton
@@ -52,6 +53,8 @@ func start_battle(enemy_id: String) -> void:
 
 	player.setup("Joueur", GameState.player_life, player_deck_ids)
 	enemy.setup(str(enemy_data.get("name", enemy_id)), int(enemy_data.get("life", 10)), decks.get(str(enemy_data.get("deck_id", "")), []))
+	player.start_turn_resources()
+	enemy.start_turn_resources()
 	log_label.text = "Combat contre %s" % enemy.name
 	refresh_ui()
 
@@ -71,9 +74,10 @@ func play_player_card(card_index: int) -> void:
 	if battle_finished_state:
 		return
 
+	player.start_turn_resources()
 	var card = player.play_card(card_index, card_database, enemy)
 	if card == null:
-		log_label.text = "Carte invalide."
+		log_label.text = "Mana insuffisant ou terrain déjà joué."
 		refresh_ui()
 		return
 
@@ -92,8 +96,9 @@ func draw_player_card() -> void:
 	player.draw_card()
 
 func enemy_turn() -> void:
+	enemy.start_turn_resources()
 	enemy.draw_card()
-	var card_index := ai.choose_card_index(enemy)
+	var card_index := ai.choose_card_index(enemy, card_database)
 	if card_index == -1:
 		log_label.text += "\n%s ne peut pas jouer." % enemy.name
 	else:
@@ -139,6 +144,7 @@ func refresh_ui() -> void:
 	enemy_name_label.text = enemy.name
 	refresh_battlefield_ui()
 	refresh_zone_summary_ui()
+	refresh_mana_ui()
 
 	for child in hand_container.get_children():
 		child.queue_free()
@@ -147,8 +153,9 @@ func refresh_ui() -> void:
 		var card_id: String = player.hand[i]
 		var card: Dictionary = card_database.get(card_id, {})
 		var button := Button.new()
-		button.text = "%s\n%s" % [str(card.get("name", card_id)), str(card.get("text", ""))]
-		button.disabled = battle_finished_state
+		var cost := int(card.get("cost", 0))
+		button.text = "%s\nCoût: %d\n%s" % [str(card.get("name", card_id)), cost, str(card.get("text", ""))]
+		button.disabled = battle_finished_state or not player.can_play_card(card)
 		button.pressed.connect(play_player_card.bind(i))
 		hand_container.add_child(button)
 
@@ -159,15 +166,25 @@ func refresh_battlefield_ui() -> void:
 func refresh_zone_summary_ui() -> void:
 	var player_zones: Dictionary = player.get_zone_summary()
 	var enemy_zones: Dictionary = enemy.get_zone_summary()
-	magic_zones_label.text = "Zones Magic — Joueur: Bibliothèque %d | Main %d | Champ de bataille %d | Cimetière %d\nEnnemi: Bibliothèque %d | Main %d | Champ de bataille %d | Cimetière %d" % [
+	magic_zones_label.text = "Zones Magic — Joueur: Bibliothèque %d | Main %d | Champ de bataille %d | Cimetière %d | Terrains %d\nEnnemi: Bibliothèque %d | Main %d | Champ de bataille %d | Cimetière %d | Terrains %d" % [
 		int(player_zones.get("library", 0)),
 		int(player_zones.get("hand", 0)),
 		int(player_zones.get("battlefield", 0)),
 		int(player_zones.get("graveyard", 0)),
+		int(player_zones.get("lands", 0)),
 		int(enemy_zones.get("library", 0)),
 		int(enemy_zones.get("hand", 0)),
 		int(enemy_zones.get("battlefield", 0)),
-		int(enemy_zones.get("graveyard", 0))
+		int(enemy_zones.get("graveyard", 0)),
+		int(enemy_zones.get("lands", 0))
+	]
+
+func refresh_mana_ui() -> void:
+	mana_label.text = "Mana joueur: %d | Terrains joueur: %d\nMana ennemi: %d | Terrains ennemi: %d" % [
+		player.current_mana,
+		player.lands.size(),
+		enemy.current_mana,
+		enemy.lands.size()
 	]
 
 func populate_battlefield(container: HBoxContainer, creatures: Array) -> void:

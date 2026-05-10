@@ -9,7 +9,11 @@
     "healing_light",
     "campfire",
     "poison_dart",
-    "knight_4_3"
+    "knight_4_3",
+    "plain_land",
+    "plain_land",
+    "plain_land",
+    "plain_land"
   ],
   "goblin_weak": [
     "wolf_3_1",
@@ -17,7 +21,11 @@
     "archer_2_1",
     "firebolt",
     "poison_dart",
-    "healing_light"
+    "healing_light",
+    "plain_land",
+    "plain_land",
+    "plain_land",
+    "plain_land"
   ],
   "beast_weak": [
     "soldier_2_2",
@@ -25,7 +33,11 @@
     "wolf_3_1",
     "knight_4_3",
     "healing_light",
-    "campfire"
+    "campfire",
+    "plain_land",
+    "plain_land",
+    "plain_land",
+    "plain_land"
   ],
   "mage_medium": [
     "archer_2_1",
@@ -35,7 +47,11 @@
     "poison_dart",
     "healing_light",
     "heavy_strike",
-    "major_heal"
+    "major_heal",
+    "plain_land",
+    "plain_land",
+    "plain_land",
+    "plain_land"
   ],
   "boss_seal_guardian": [
     "knight_4_3",
@@ -47,6 +63,10 @@
     "heavy_strike",
     "major_heal",
     "campfire",
-    "heavy_strike"
+    "heavy_strike",
+    "plain_land",
+    "plain_land",
+    "plain_land",
+    "plain_land"
   ]
 }

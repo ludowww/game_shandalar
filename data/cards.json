@@ -7,8 +7,9 @@
     "value": 2,
     "attack": 2,
     "health": 2,
-    "text": "Permanent: arrive sur le champ de bataille comme 2/2 et attaque automatiquement.",
-    "zone_after_play": "battlefield"
+    "text": "Permanent: arrive sur le champ de bataille comme 2/2 et attaque automatiquement. Coût 2 mana générique.",
+    "zone_after_play": "battlefield",
+    "cost": 2
   },
   {
     "id": "wolf_3_1",
@@ -18,8 +19,9 @@
     "value": 3,
     "attack": 3,
     "health": 1,
-    "text": "Permanent: arrive sur le champ de bataille comme 3/1 et attaque automatiquement.",
-    "zone_after_play": "battlefield"
+    "text": "Permanent: arrive sur le champ de bataille comme 3/1 et attaque automatiquement. Coût 2 mana générique.",
+    "zone_after_play": "battlefield",
+    "cost": 2
   },
   {
     "id": "archer_2_1",
@@ -29,8 +31,9 @@
     "value": 2,
     "attack": 2,
     "health": 1,
-    "text": "Permanent: arrive sur le champ de bataille comme 2/1 et attaque automatiquement.",
-    "zone_after_play": "battlefield"
+    "text": "Permanent: arrive sur le champ de bataille comme 2/1 et attaque automatiquement. Coût 1 mana générique.",
+    "zone_after_play": "battlefield",
+    "cost": 1
   },
   {
     "id": "knight_4_3",
@@ -40,8 +43,9 @@
     "value": 4,
     "attack": 4,
     "health": 3,
-    "text": "Permanent: arrive sur le champ de bataille comme 4/3 et attaque automatiquement.",
-    "zone_after_play": "battlefield"
+    "text": "Permanent: arrive sur le champ de bataille comme 4/3 et attaque automatiquement. Coût 4 mana générique.",
+    "zone_after_play": "battlefield",
+    "cost": 4
   },
   {
     "id": "firebolt",
@@ -49,7 +53,8 @@
     "type": "spell",
     "effect": "damage",
     "value": 3,
-    "text": "Inflige 3 dégâts."
+    "text": "Inflige 3 dégâts. Coût 2 mana générique.",
+    "cost": 2
   },
   {
     "id": "poison_dart",
@@ -57,7 +62,8 @@
     "type": "spell",
     "effect": "damage",
     "value": 4,
-    "text": "Inflige 4 dégâts."
+    "text": "Inflige 4 dégâts. Coût 3 mana générique.",
+    "cost": 3
   },
   {
     "id": "heavy_strike",
@@ -65,7 +71,8 @@
     "type": "spell",
     "effect": "damage",
     "value": 5,
-    "text": "Inflige 5 dégâts."
+    "text": "Inflige 5 dégâts. Coût 4 mana générique.",
+    "cost": 4
   },
   {
     "id": "healing_light",
@@ -73,7 +80,8 @@
     "type": "spell",
     "effect": "heal",
     "value": 3,
-    "text": "Gagne 3 points de vie."
+    "text": "Gagne 3 points de vie. Coût 1 mana générique.",
+    "cost": 1
   },
   {
     "id": "campfire",
@@ -81,7 +89,8 @@
     "type": "spell",
     "effect": "heal",
     "value": 4,
-    "text": "Gagne 4 points de vie."
+    "text": "Gagne 4 points de vie. Coût 2 mana générique.",
+    "cost": 2
   },
   {
     "id": "major_heal",
@@ -89,6 +98,17 @@
     "type": "spell",
     "effect": "heal",
     "value": 5,
-    "text": "Gagne 5 points de vie."
+    "text": "Gagne 5 points de vie. Coût 3 mana générique.",
+    "cost": 3
+  },
+  {
+    "id": "plain_land",
+    "name": "Plaine sauvage",
+    "type": "land",
+    "effect": "mana",
+    "cost": 0,
+    "mana_value": 1,
+    "text": "Terrain simple: fournit 1 mana générique à chaque tour.",
+    "zone_after_play": "lands"
   }
 ]

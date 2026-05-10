@@ -37,12 +37,14 @@ class BattleEngineStaticTests(unittest.TestCase):
         ]:
             self.assertIn(snippet, content)
 
-    def test_simple_ai_plays_first_card(self):
+    def test_simple_ai_plays_first_playable_card(self):
         content = AI.read_text(encoding="utf-8")
         for snippet in [
             "extends RefCounted",
-            "func choose_card_index(combatant) -> int:",
-            "return 0",
+            "func choose_card_index(combatant, card_database: Dictionary = {}) -> int:",
+            "for i in range(combatant.hand.size()):",
+            "combatant.can_play_card(card)",
+            "return i",
             "return -1",
         ]:
             self.assertIn(snippet, content)

@@ -32,7 +32,10 @@ class GameDataStaticTests(unittest.TestCase):
             self.assertIn("name", card)
             self.assertIn("type", card)
             self.assertIn("text", card)
-            self.assertIn(card["type"], ["spell", "creature"])
+            self.assertIn(card["type"], ["spell", "creature", "land"])
+            if card.get("type") == "land":
+                self.assertEqual(card.get("effect"), "mana")
+                self.assertEqual(card.get("mana_value"), 1)
             if card.get("effect") in ["damage", "heal"]:
                 self.assertIsInstance(card.get("value"), int)
                 self.assertGreater(card["value"], 0)
