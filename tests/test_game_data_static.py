@@ -19,7 +19,7 @@ class GameDataStaticTests(unittest.TestCase):
 
     def test_cards_define_v0_damage_heal_and_creature_effects(self):
         card_ids = self.card_ids
-        for required_id in ["soldier_2_2", "wolf_3_1", "firebolt", "healing_light"]:
+        for required_id in ["grizzly_bears", "savannah_lions", "lightning_bolt", "healing_salve", "forest"]:
             self.assertIn(required_id, card_ids)
 
         effects = {card.get("effect") for card in self.cards}

@@ -37,4 +37,5 @@ carte → déplacement → rencontre → combat abstrait → récompense → dec
 19. T018 — Mana simplifié / terrains
 20. T019 — Tour Magic simplifié
 21. T020 — Attaque et blocage simplifiés
-22. T021 — Premier équilibrage V1
+22. T021 — Cartes Magic simples réelles
+23. T022 — Premier équilibrage V1

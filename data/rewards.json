@@ -1,23 +1,23 @@
 {
   "weak_reward": [
-    "wolf_3_1",
-    "firebolt",
-    "healing_light",
-    "archer_2_1",
-    "campfire"
+    "savannah_lions",
+    "grizzly_bears",
+    "shock",
+    "healing_salve",
+    "forest"
   ],
   "medium_reward": [
-    "heavy_strike",
-    "major_heal",
-    "wolf_3_1",
-    "poison_dart",
-    "knight_4_3"
+    "hill_giant",
+    "air_elemental",
+    "lightning_bolt",
+    "scathe_zombies",
+    "craw_wurm"
   ],
   "map_reward": [
-    "firebolt",
-    "heavy_strike",
-    "major_heal",
-    "poison_dart",
-    "campfire"
+    "lightning_bolt",
+    "shock",
+    "healing_salve",
+    "hill_giant",
+    "forest"
   ]
 }
