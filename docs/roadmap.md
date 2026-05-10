@@ -31,4 +31,5 @@ carte → déplacement → rencontre → combat abstrait → récompense → dec
 13. T013 — Lieux spéciaux interactifs
 14. T014 — Marchand simple
 15. T015 — Feedback UI carte aventure
-16. T016 — Premier équilibrage V1
+16. T016 — Créatures persistantes
+17. T017 — Premier équilibrage V1

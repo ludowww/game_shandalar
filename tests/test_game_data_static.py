@@ -25,6 +25,7 @@ class GameDataStaticTests(unittest.TestCase):
         effects = {card.get("effect") for card in self.cards}
         self.assertIn("damage", effects)
         self.assertIn("heal", effects)
+        self.assertIn("summon", effects)
 
         for card in self.cards:
             self.assertIn("id", card)

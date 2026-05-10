@@ -3,41 +3,45 @@
     "id": "soldier_2_2",
     "name": "Soldat",
     "type": "creature",
-    "effect": "damage",
+    "effect": "summon",
     "value": 2,
     "attack": 2,
     "health": 2,
-    "text": "Inflige 2 dégâts immédiatement."
+    "text": "Permanent: arrive sur le champ de bataille comme 2/2 et attaque automatiquement.",
+    "zone_after_play": "battlefield"
   },
   {
     "id": "wolf_3_1",
     "name": "Loup",
     "type": "creature",
-    "effect": "damage",
+    "effect": "summon",
     "value": 3,
     "attack": 3,
     "health": 1,
-    "text": "Inflige 3 dégâts immédiatement."
+    "text": "Permanent: arrive sur le champ de bataille comme 3/1 et attaque automatiquement.",
+    "zone_after_play": "battlefield"
   },
   {
     "id": "archer_2_1",
     "name": "Archère",
     "type": "creature",
-    "effect": "damage",
+    "effect": "summon",
     "value": 2,
     "attack": 2,
     "health": 1,
-    "text": "Tir précis : inflige 2 dégâts."
+    "text": "Permanent: arrive sur le champ de bataille comme 2/1 et attaque automatiquement.",
+    "zone_after_play": "battlefield"
   },
   {
     "id": "knight_4_3",
     "name": "Chevalier",
     "type": "creature",
-    "effect": "damage",
+    "effect": "summon",
     "value": 4,
     "attack": 4,
     "health": 3,
-    "text": "Charge : inflige 4 dégâts."
+    "text": "Permanent: arrive sur le champ de bataille comme 4/3 et attaque automatiquement.",
+    "zone_after_play": "battlefield"
   },
   {
     "id": "firebolt",

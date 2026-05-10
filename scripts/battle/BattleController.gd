@@ -6,6 +6,7 @@ const DataLoaderScript = preload("res://scripts/core/DataLoader.gd")
 const Deck = preload("res://scripts/battle/Deck.gd")
 const Combatant = preload("res://scripts/battle/Combatant.gd")
 const SimpleAI = preload("res://scripts/battle/SimpleAI.gd")
+const ATTACK_LOG_TEXT := "créatures attaquent"
 
 var card_database: Dictionary = {}
 var enemies_by_id: Dictionary = {}
@@ -19,6 +20,8 @@ var data_loader := DataLoaderScript.new()
 @onready var player_life_label: Label = %PlayerLifeLabel
 @onready var enemy_life_label: Label = %EnemyLifeLabel
 @onready var enemy_name_label: Label = %EnemyNameLabel
+@onready var player_battlefield_container: HBoxContainer = %PlayerBattlefieldContainer
+@onready var enemy_battlefield_container: HBoxContainer = %EnemyBattlefieldContainer
 @onready var hand_container: HBoxContainer = %HandContainer
 @onready var log_label: Label = %LogLabel
 @onready var return_button: Button = %ReturnButton
@@ -75,6 +78,7 @@ func play_player_card(card_index: int) -> void:
 
 	log_label.text = "Tu joues %s." % str(card.get("name", "Carte"))
 	draw_player_card()
+	resolve_creature_attack(player, enemy, "Tes")
 	if check_battle_end():
 		refresh_ui()
 		return
@@ -95,7 +99,13 @@ func enemy_turn() -> void:
 	var card = enemy.play_card(card_index, card_database, player)
 	if card != null:
 		log_label.text += "\n%s joue %s." % [enemy.name, str(card.get("name", "Carte"))]
+	resolve_creature_attack(enemy, player, enemy.name)
 	check_battle_end()
+
+func resolve_creature_attack(attacker, defender, attacker_label: String) -> void:
+	var damage := attacker.attack_with_creatures(defender)
+	if damage > 0:
+		log_label.text += "\n%s %s pour %d." % [attacker_label, ATTACK_LOG_TEXT, damage]
 
 func check_battle_end() -> bool:
 	if enemy.is_dead():
@@ -125,6 +135,7 @@ func refresh_ui() -> void:
 	player_life_label.text = "Joueur : %d PV" % player.life
 	enemy_life_label.text = "%s : %d PV" % [enemy.name, enemy.life]
 	enemy_name_label.text = enemy.name
+	refresh_battlefield_ui()
 
 	for child in hand_container.get_children():
 		child.queue_free()
@@ -137,6 +148,20 @@ func refresh_ui() -> void:
 		button.disabled = battle_finished_state
 		button.pressed.connect(play_player_card.bind(i))
 		hand_container.add_child(button)
+
+func refresh_battlefield_ui() -> void:
+	populate_battlefield(player_battlefield_container, player.battlefield)
+	populate_battlefield(enemy_battlefield_container, enemy.battlefield)
+
+func populate_battlefield(container: HBoxContainer, creatures: Array) -> void:
+	for child in container.get_children():
+		child.queue_free()
+	for creature in creatures:
+		var label := Label.new()
+		label.custom_minimum_size = Vector2(120, 48)
+		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		label.text = "%s\n%d/%d" % [str(creature.get("name", "Créature")), int(creature.get("attack", 0)), int(creature.get("health", 0))]
+		container.add_child(label)
 
 func is_current_enemy_boss() -> bool:
 	var enemy_data: Dictionary = enemies_by_id.get(GameState.current_enemy_id, {})

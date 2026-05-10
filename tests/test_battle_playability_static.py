@@ -20,12 +20,12 @@ class BattlePlayabilityStaticTests(unittest.TestCase):
         cards = {card["id"]: card for card in json.loads(CARDS.read_text(encoding="utf-8"))}
         decks = json.loads(DECKS.read_text(encoding="utf-8"))
         enemies = {enemy["id"]: enemy for enemy in json.loads(ENEMIES.read_text(encoding="utf-8"))}
-        starting_damage = sum(
-            int(cards[card_id].get("value", 0))
+        starting_pressure = sum(
+            int(cards[card_id].get("value", 0)) if cards[card_id].get("effect") == "damage" else int(cards[card_id].get("attack", 0))
             for card_id in decks["player_start"]
-            if cards[card_id].get("effect") == "damage"
+            if cards[card_id].get("effect") == "damage" or cards[card_id].get("type") == "creature"
         )
-        self.assertGreaterEqual(starting_damage, enemies["goblin_weak_01"]["life"])
+        self.assertGreaterEqual(starting_pressure, enemies["goblin_weak_01"]["life"])
 
 
 if __name__ == "__main__":

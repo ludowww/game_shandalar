@@ -35,13 +35,13 @@ class BattleEnduranceStaticTests(unittest.TestCase):
         self.assertGreaterEqual(len(set(decks["boss_seal_guardian"])), 7)
         self.assertGreaterEqual(len(decks["boss_seal_guardian"]), 10)
 
-        player_damage = sum(
-            int(cards[card_id].get("value", 0))
+        player_pressure = sum(
+            int(cards[card_id].get("value", 0)) if cards[card_id].get("effect") == "damage" else int(cards[card_id].get("attack", 0))
             for card_id in decks["player_start"]
-            if cards[card_id].get("effect") == "damage"
+            if cards[card_id].get("effect") == "damage" or cards[card_id].get("type") == "creature"
         )
         boss_life = enemies["boss_seal_guardian"]["life"]
-        self.assertGreaterEqual(player_damage, boss_life)
+        self.assertGreaterEqual(player_pressure, boss_life)
 
     def test_reward_pools_offer_more_than_three_options(self):
         rewards = json.loads(REWARDS.read_text(encoding="utf-8"))
