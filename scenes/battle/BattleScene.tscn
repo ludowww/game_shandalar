@@ -82,6 +82,13 @@ text = "Mana — Mana joueur: 0 | Terrains joueur: 0 | Mana ennemi: 0 | Terrains
 horizontal_alignment = 1
 autowrap_mode = 3
 
+[node name="PhaseLabel" type="Label" parent="RootMargin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Phase : Début de tour"
+horizontal_alignment = 1
+autowrap_mode = 3
+
 [node name="EnemyBattlefieldTitle" type="Label" parent="RootMargin/VBox"]
 layout_mode = 2
 text = "Champ de bataille ennemi"

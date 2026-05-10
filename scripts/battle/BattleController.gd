@@ -7,6 +7,15 @@ const Deck = preload("res://scripts/battle/Deck.gd")
 const Combatant = preload("res://scripts/battle/Combatant.gd")
 const SimpleAI = preload("res://scripts/battle/SimpleAI.gd")
 const ATTACK_LOG_TEXT := "créatures attaquent"
+const PHASE_BEGIN := "Début de tour"
+const PHASE_UNTAP := "Dégagement / ressources"
+const PHASE_DRAW := "Pioche"
+const PHASE_MAIN := "Phase principale"
+const PHASE_COMBAT := "Combat automatique"
+const PHASE_END := "Fin de tour"
+const PHASE_LOG_MANA := "mana disponible"
+const PHASE_LOG_DRAW := "pioche"
+const PHASE_LOG_MAIN := "phase principale"
 
 var card_database: Dictionary = {}
 var enemies_by_id: Dictionary = {}
@@ -15,6 +24,7 @@ var player := Combatant.new()
 var enemy := Combatant.new()
 var ai := SimpleAI.new()
 var battle_finished_state := false
+var current_phase := PHASE_BEGIN
 var data_loader := DataLoaderScript.new()
 
 @onready var player_life_label: Label = %PlayerLifeLabel
@@ -24,6 +34,7 @@ var data_loader := DataLoaderScript.new()
 @onready var enemy_battlefield_container: HBoxContainer = %EnemyBattlefieldContainer
 @onready var magic_zones_label: Label = %MagicZonesLabel
 @onready var mana_label: Label = %ManaLabel
+@onready var phase_label: Label = %PhaseLabel
 @onready var hand_container: HBoxContainer = %HandContainer
 @onready var log_label: Label = %LogLabel
 @onready var pass_turn_button: Button = %PassTurnButton
@@ -56,9 +67,8 @@ func start_battle(enemy_id: String) -> void:
 
 	player.setup("Joueur", GameState.player_life, player_deck_ids)
 	enemy.setup(str(enemy_data.get("name", enemy_id)), int(enemy_data.get("life", 10)), decks.get(str(enemy_data.get("deck_id", "")), []))
-	player.start_turn_resources()
-	enemy.start_turn_resources()
 	log_label.text = "Combat contre %s" % enemy.name
+	begin_player_turn()
 	refresh_ui()
 
 func build_card_database(cards_data: Array) -> Dictionary:
@@ -73,50 +83,76 @@ func build_enemy_database(enemies_data: Array) -> Dictionary:
 		result[str(enemy_data.get("id", ""))] = enemy_data
 	return result
 
+func set_phase(phase_name: String) -> void:
+	current_phase = phase_name
+	if phase_label != null:
+		phase_label.text = "Phase : %s" % current_phase
+
+func begin_player_turn() -> void:
+	set_phase(PHASE_BEGIN)
+	log_label.text += "\nDébut de tour joueur."
+	set_phase(PHASE_UNTAP)
+	player.start_turn_resources()
+	log_label.text += "\nDégagement / reset ressources : mana disponible %d." % player.current_mana
+	set_phase(PHASE_DRAW)
+	draw_player_card()
+	log_label.text += "\nPioche : tu pioches une carte."
+	set_phase(PHASE_MAIN)
+	log_label.text += "\nPhase principale : joue un terrain ou une carte avec ton mana."
+
 func play_player_card(card_index: int) -> void:
 	if battle_finished_state:
 		return
 
-	player.start_turn_resources()
+	set_phase(PHASE_MAIN)
 	var card = player.play_card(card_index, card_database, enemy)
 	if card == null:
-		log_label.text = "Mana insuffisant ou terrain déjà joué."
+		log_label.text = "Phase principale : Mana insuffisant ou terrain déjà joué."
 		refresh_ui()
 		return
 
-	log_label.text = "Tu joues %s." % str(card.get("name", "Carte"))
-	draw_player_card()
-	resolve_creature_attack(player, enemy, "Tes")
-	player.ready_creatures_for_next_turn()
+	log_label.text = "Phase principale : tu joues %s." % str(card.get("name", "Carte"))
 	if check_battle_end():
 		refresh_ui()
 		return
 
-	enemy_turn()
-	player.start_turn_resources()
 	refresh_ui()
 
 func end_player_turn() -> void:
 	if battle_finished_state:
 		return
 
-	log_label.text = "Tu termines ton tour."
-	resolve_creature_attack(player, enemy, "Tes")
-	player.ready_creatures_for_next_turn()
-	if check_battle_end():
+	log_label.text = "Tu termines ta phase principale."
+	if resolve_player_combat_step():
 		refresh_ui()
 		return
-
+	set_phase(PHASE_END)
+	log_label.text += "\nFin de tour joueur."
 	enemy_turn()
-	player.start_turn_resources()
+	if not battle_finished_state:
+		begin_player_turn()
 	refresh_ui()
+
+func resolve_player_combat_step() -> bool:
+	set_phase(PHASE_COMBAT)
+	log_label.text += "\nCombat automatique : tes créatures attaquent."
+	resolve_creature_attack(player, enemy, "Tes")
+	player.ready_creatures_for_next_turn()
+	return check_battle_end()
 
 func draw_player_card() -> void:
 	player.draw_card()
 
 func enemy_turn() -> void:
+	set_phase(PHASE_BEGIN)
+	log_label.text += "\nDébut de tour ennemi."
+	set_phase(PHASE_UNTAP)
 	enemy.start_turn_resources()
+	log_label.text += "\n%s prépare son mana disponible (%d)." % [enemy.name, enemy.current_mana]
+	set_phase(PHASE_DRAW)
 	enemy.draw_card()
+	log_label.text += "\n%s pioche." % enemy.name
+	set_phase(PHASE_MAIN)
 	var card_index := ai.choose_card_index(enemy, card_database)
 	if card_index == -1:
 		log_label.text += "\n%s ne peut pas jouer." % enemy.name
@@ -124,9 +160,13 @@ func enemy_turn() -> void:
 		var card = enemy.play_card(card_index, card_database, player)
 		if card != null:
 			log_label.text += "\n%s joue %s." % [enemy.name, str(card.get("name", "Carte"))]
+	set_phase(PHASE_COMBAT)
+	log_label.text += "\nCombat automatique : les créatures ennemies attaquent."
 	resolve_creature_attack(enemy, player, enemy.name)
 	enemy.ready_creatures_for_next_turn()
 	check_battle_end()
+	set_phase(PHASE_END)
+	log_label.text += "\nFin de tour ennemi."
 
 func resolve_creature_attack(attacker, defender, attacker_label: String) -> void:
 	var damage: int = attacker.attack_with_creatures(defender)
@@ -161,6 +201,7 @@ func refresh_ui() -> void:
 	player_life_label.text = "Joueur : %d PV" % player.life
 	enemy_life_label.text = "%s : %d PV" % [enemy.name, enemy.life]
 	enemy_name_label.text = enemy.name
+	set_phase(current_phase)
 	pass_turn_button.visible = not battle_finished_state
 	pass_turn_button.disabled = battle_finished_state
 	refresh_battlefield_ui()
